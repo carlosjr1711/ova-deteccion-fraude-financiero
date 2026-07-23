@@ -740,15 +740,36 @@ const questions = [
 
 const quizContainer = document.getElementById('quizContainer');
 let answered = 0, score = 0;
+let lastCorrectPosition = -1;
 
 questions.forEach((item, qi) => {
-  const shuffledOpts = [...item.opts];
-  const correctIndex = item.correct;
-  const correctValue = item.opts[correctIndex];
-  const randomPos = Math.floor(Math.random() * shuffledOpts.length);
-  const temp = shuffledOpts[0];
-  shuffledOpts[0] = correctValue;
-  shuffledOpts[randomPos] = temp;
+  const options = item.opts.slice();
+  const correctValue = options[item.correct];
+  const totalOptions = options.length;
+
+  let correctPosition = Math.floor(Math.random() * totalOptions);
+  if (qi > 0) {
+    while (correctPosition === lastCorrectPosition) {
+      correctPosition = Math.floor(Math.random() * totalOptions);
+    }
+  }
+
+  const remainingIndices = Array.from({ length: totalOptions }, (_, idx) => idx).filter(idx => idx !== item.correct);
+  const shuffledIndices = [...remainingIndices];
+  for (let i = shuffledIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledIndices[i], shuffledIndices[j]] = [shuffledIndices[j], shuffledIndices[i]];
+  }
+
+  const shuffledOpts = Array(totalOptions);
+  shuffledOpts[correctPosition] = correctValue;
+
+  let writeIndex = 0;
+  shuffledIndices.forEach(index => {
+    while (writeIndex === correctPosition) writeIndex++;
+    shuffledOpts[writeIndex] = options[index];
+    writeIndex++;
+  });
 
   const card = document.createElement('div');
   card.className = 'quiz-card';
@@ -764,7 +785,7 @@ questions.forEach((item, qi) => {
 
   const buttons = card.querySelectorAll('.qopt');
   const feedback = card.querySelector('.qfeedback');
-  const correctPosition = shuffledOpts.indexOf(correctValue);
+  lastCorrectPosition = correctPosition;
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
