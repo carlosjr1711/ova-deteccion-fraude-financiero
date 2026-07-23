@@ -671,40 +671,70 @@ renderDemo();
 /* ===== Quiz ===== */
 const questions = [
   {
-    q:"¿Cuál es el principal desafío al entrenar un modelo de ML para detectar fraude?",
-    opts:["Que hay demasiadas variables numéricas","Que las transacciones fraudulentas son una fracción muy pequeña del total (datos desbalanceados)","Que los bancos no permiten usar Python","Que el fraude solo ocurre de noche"],
+    q:"¿Cuál es el principal desafío al entrenar un modelo de ML para detectar fraude financiero?",
+    opts:[
+      "Equilibrar la necesidad de detectar fraudes reales sin generar un exceso de alertas falsas en transacciones legítimas",
+      "Obtener una muestra lo suficientemente grande de transacciones fraudulentas frente a la cantidad de legítimas",
+      "Reducir el número de variables disponibles en el dataset para simplificar la interpretación",
+      "Eliminar por completo la necesidad de evaluar métricas de rendimiento durante el entrenamiento"
+    ],
     correct:1,
-    fb:"Correcto: el fraude suele ser menos del 1% de las transacciones, lo que obliga a usar métricas distintas a la exactitud simple."
+    fb:"Correcto: el fraude suele ser una clase minoritaria, por lo que el problema principal es el desbalance de clases y la necesidad de optimizar métricas como recall y precisión."
   },
   {
-    q:"Si un modelo tiene 99.4% de exactitud (accuracy) pero el fraude representa el 0.5% de los datos, ¿qué se debe revisar antes de celebrar?",
-    opts:["Nada, esa exactitud ya es suficiente","Si el modelo realmente está detectando el fraude (recall) o solo prediciendo 'no fraude' siempre","El color del dashboard","La versión de Python usada"],
+    q:"Si un modelo alcanza 99.4% de accuracy en un dataset donde el fraude representa solo el 0.5%, ¿qué debe analizarse con mayor cuidado?",
+    opts:[
+      "Si el modelo está aprendiendo relaciones no lineales entre variables y no solo probabilidades lineales",
+      "Si el modelo realmente detecta fraude real o simplemente predice la clase mayoritaria con alta frecuencia",
+      "Si el modelo es capaz de generalizar a nuevas bases de datos sin necesidad de tuning",
+      "Si el modelo está entrenado con variables categóricas y no con variables numéricas"
+    ],
     correct:1,
-    fb:"Correcto: con clases desbalanceadas, la exactitud puede ser engañosa. Hay que revisar precisión y recall."
+    fb:"Correcto: en datasets desbalanceados, la exactitud puede ser engañosa; hay que analizar precisión, recall y el impacto de los falsos negativos."
   },
   {
-    q:"Isolation Forest es un algoritmo principalmente usado para:",
-    opts:["Clasificación supervisada con etiquetas balanceadas","Detección de anomalías, aislando observaciones atípicas","Reducir el tamaño de una base de datos","Encriptar transacciones bancarias"],
+    q:"¿Cuál es la utilidad principal de Isolation Forest en este contexto?",
+    opts:[
+      "Modelar relaciones causales entre variables explicativas y la probabilidad de fraude",
+      "Detectar observaciones atípicas cuando no existen suficientes etiquetas de fraude previas",
+      "Resolver problemas de clasificación mediante reglas lógicas manuales",
+      "Optimizar el tiempo de respuesta del sistema mediante reducción de dimensionalidad"
+    ],
     correct:1,
-    fb:"Correcto: Isolation Forest aprende qué es 'normal' y aísla lo que se comporta distinto, sin necesitar etiquetas de fraude."
+    fb:"Correcto: Isolation Forest es útil para detectar anomalías cuando las etiquetas de fraude son escasas o cuando aparecen patrones nuevos."
   },
   {
-    q:"Un árbol de decisión demasiado profundo tiende a:",
-    opts:["Generalizar mejor a datos nuevos","Sobreajustarse (overfitting) memorizando el ruido de entrenamiento","Volverse un modelo no supervisado","Ejecutarse más rápido siempre"],
+    q:"¿Qué efecto suele producir un árbol de decisión excesivamente profundo?",
+    opts:[
+      "Mejora la estabilidad del modelo ante datos nuevos y no observados",
+      "Puede memorizar ruido del entrenamiento y mostrar overfitting",
+      "Aumenta la capacidad de generalización del modelo sin perder interpretabilidad",
+      "Disminuye de forma automática la varianza del modelo sin afectar su sesgo"
+    ],
     correct:1,
-    fb:"Correcto: la profundidad excesiva hace que el árbol memorice particularidades del set de entrenamiento en vez de aprender patrones generales."
+    fb:"Correcto: un árbol muy profundo tiende a adaptar el ruido del conjunto de entrenamiento, lo que reduce la capacidad de generalización."
   },
   {
-    q:"En el laboratorio de umbral, si baja el umbral de decisión hacia 0, ¿qué suele ocurrir?",
-    opts:["Sube la precisión y baja el recall","Sube el recall pero baja la precisión (más falsos positivos)","No cambia ninguna métrica","El modelo deja de funcionar"],
+    q:"En el laboratorio de umbral, ¿qué ocurre al reducir el umbral de decisión hacia valores bajos?",
+    opts:[
+      "Se incrementa la precisión porque se bloquean menos transacciones",
+      "Se incrementa el recall, pero suele caer la precisión por un mayor número de falsos positivos",
+      "Se reduce el recall porque se detectan menos casos de fraude",
+      "No cambia el desempeño del modelo porque el umbral solo afecta la visualización"
+    ],
     correct:1,
-    fb:"Correcto: un umbral bajo marca más transacciones como fraude, detectando más casos reales (recall alto) pero también más falsas alarmas."
+    fb:"Correcto: un umbral menor aumenta la sensibilidad frente al fraude, pero también eleva la cantidad de alertas falsas."
   },
   {
-    q:"¿Qué tipo de aprendizaje usa la regresión logística en este contexto?",
-    opts:["No supervisado, porque no usa datos históricos","Supervisado, porque aprende a partir de transacciones ya etiquetadas como fraude o no fraude","Por refuerzo, porque recibe premios y castigos","Ninguno, es una regla fija escrita a mano"],
+    q:"¿Qué tipo de aprendizaje utiliza la regresión logística en este caso?",
+    opts:[
+      "Aprendizaje no supervisado, porque no necesita ejemplos etiquetados",
+      "Aprendizaje supervisado, porque aprende a partir de datos históricos etiquetados como fraude o no fraude",
+      "Aprendizaje por refuerzo, porque ajusta decisiones según recompensas continuas",
+      "Aprendizaje semi-supervisado, porque combina reglas manuales con datos sin etiquetar"
+    ],
     correct:1,
-    fb:"Correcto: la regresión logística necesita ejemplos históricos etiquetados para aprender la relación entre variables y probabilidad de fraude."
+    fb:"Correcto: la regresión logística requiere ejemplos históricos con etiquetas para estimar la probabilidad de pertenencia a una clase."
   }
 ];
 
@@ -712,13 +742,21 @@ const quizContainer = document.getElementById('quizContainer');
 let answered = 0, score = 0;
 
 questions.forEach((item, qi) => {
+  const shuffledOpts = [...item.opts];
+  const correctIndex = item.correct;
+  const correctValue = item.opts[correctIndex];
+  const randomPos = Math.floor(Math.random() * shuffledOpts.length);
+  const temp = shuffledOpts[0];
+  shuffledOpts[0] = correctValue;
+  shuffledOpts[randomPos] = temp;
+
   const card = document.createElement('div');
   card.className = 'quiz-card';
   card.innerHTML = `
     <div class="qn">Pregunta ${qi+1} de ${questions.length}</div>
     <h4>${item.q}</h4>
     <div class="qoptions">
-      ${item.opts.map((o,oi)=>`<button class="qopt" data-i="${oi}">${o}</button>`).join('')}
+      ${shuffledOpts.map((o,oi)=>`<button class="qopt" data-i="${oi}">${o}</button>`).join('')}
     </div>
     <div class="qfeedback"></div>
   `;
@@ -726,6 +764,7 @@ questions.forEach((item, qi) => {
 
   const buttons = card.querySelectorAll('.qopt');
   const feedback = card.querySelector('.qfeedback');
+  const correctPosition = shuffledOpts.indexOf(correctValue);
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -735,12 +774,12 @@ questions.forEach((item, qi) => {
       buttons.forEach(b => {
         b.disabled = true;
         const bi = parseInt(b.dataset.i,10);
-        if(bi === item.correct) b.classList.add('correct');
+        if(bi === correctPosition) b.classList.add('correct');
         else if(bi === chosen) b.classList.add('incorrect');
       });
       feedback.style.display = 'block';
-      feedback.textContent = (chosen === item.correct ? '✓ ' : '✗ ') + item.fb;
-      if(chosen === item.correct) score++;
+      feedback.textContent = (chosen === correctPosition ? '✓ ' : '✗ ') + item.fb;
+      if(chosen === correctPosition) score++;
       answered++;
       if(answered === questions.length){
         const scoreBox = document.getElementById('quizScore');
