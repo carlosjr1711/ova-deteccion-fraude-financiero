@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVA · Detección de Fraudes Financieros con Aprendizaje Automático</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0B1220;
+    --bg-panel:#111B2E;
+    --bg-panel-2:#0E1728;
+    --text-primary:#E8EDF5;
+    --text-muted:#8B96AC;
+    --text-dim:#5B6884;
+    --accent-alert:#F2545B;
+    --accent-alert-dim:rgba(242,84,91,0.14);
+    --accent-safe:#34D399;
+    --accent-safe-dim:rgba(52,211,153,0.14);
+    --accent-amber:#F5A623;
+    --border:#212C44;
+    --border-soft:#182238;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg-deep);
+    color:var(--text-primary);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:var(--accent-amber);}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 28px;}
+  section{padding:88px 0;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent-amber);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--accent-amber); box-shadow:0 0 0 3px rgba(245,166,35,0.18);}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,18,32,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; padding:14px 28px;}
+  .brand{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--text-muted); display:flex; gap:8px; align-items:center;}
+  .brand b{color:var(--text-primary); font-weight:600;}
+  .navlinks{display:flex; gap:26px; font-size:13.5px;}
+  .navlinks a{color:var(--text-muted); text-decoration:none; transition:color .15s;}
+  .navlinks a:hover{color:var(--text-primary);}
+  @media(max-width:720px){.navlinks{display:none;}}
+
+  /* ===== HERO ===== */
+  .hero{padding:72px 0 60px;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(32px,4.6vw,50px); line-height:1.08; font-weight:700;}
+  .hero h1 span{color:var(--accent-amber);}
+  .hero p.lead{color:var(--text-muted); font-size:17px; margin-top:20px; max-width:46ch;}
+  .stat-row{display:flex; gap:28px; margin-top:32px; flex-wrap:wrap;}
+  .stat{border-left:2px solid var(--border); padding-left:14px;}
+  .stat .num{font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--text-primary); font-weight:600;}
+  .stat .lbl{font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.06em;}
+
+  /* Transaction feed - signature element */
+  .feed{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .feed-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 16px; border-bottom:1px solid var(--border-soft);
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--text-dim);
+    text-transform:uppercase; letter-spacing:.08em;
+  }
+  .feed-head .live{display:flex; align-items:center; gap:6px; color:var(--accent-safe);}
+  .feed-head .live::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--accent-safe); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .feed-body{height:300px; overflow:hidden; position:relative;}
+  .tx-row{
+    display:grid; grid-template-columns:70px 1fr 64px 84px; gap:10px; align-items:center;
+    padding:10px 16px; font-family:'JetBrains Mono',monospace; font-size:12px;
+    border-bottom:1px solid var(--border-soft);
+    opacity:0; transform:translateY(6px);
+    animation:txIn .4s ease forwards;
+  }
+  @keyframes txIn{to{opacity:1; transform:translateY(0);}}
+  .tx-row .id{color:var(--text-dim);}
+  .tx-row .merchant{color:var(--text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .tx-row .amt{color:var(--text-muted); text-align:right;}
+  .tag{padding:3px 8px; border-radius:20px; font-size:10.5px; text-align:center; font-weight:600; letter-spacing:.03em;}
+  .tag.ok{background:var(--accent-safe-dim); color:var(--accent-safe);}
+  .tag.fraud{background:var(--accent-alert-dim); color:var(--accent-alert);}
+
+  /* ===== SECTION HEADERS ===== */
+  .sec-head{max-width:640px; margin-bottom:40px;}
+  .sec-head h2{font-size:clamp(24px,3vw,32px); font-weight:700;}
+  .sec-head p{color:var(--text-muted); margin-top:10px; font-size:15.5px;}
+
+  /* ===== OBJETIVOS ===== */
+  .obj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media(max-width:720px){.obj-grid{grid-template-columns:1fr;}}
+  .obj-card{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px 22px;
+  }
+  .obj-card .k{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent-amber); letter-spacing:.08em;}
+  .obj-card p{margin:8px 0 0; font-size:14.5px; color:var(--text-primary);}
+
+  .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background:rgba(245,166,35,.12); color:var(--accent-amber); font-size:12px; text-transform:uppercase; letter-spacing:.08em; margin-top:18px;}
+  .hero-badges{display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 0;}
+  .hero-badges span{padding:8px 12px; border:1px solid var(--border); border-radius:999px; background:rgba(17,27,46,.7); color:var(--text-muted); font-size:12px; letter-spacing:.06em; text-transform:uppercase;}
+  .process-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px;}
+  @media(max-width:860px){.process-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:720px){.process-grid{grid-template-columns:1fr;}}
+  .process-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px; transition:transform .2s ease, border-color .2s ease;}
+  .process-card:hover{transform:translateY(-2px); border-color:var(--accent-amber);}
+  .process-card .k{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent-amber); letter-spacing:.08em;}
+  .process-card h4{font-size:15px; margin-top:8px;}
+  .process-card p{font-size:13.5px; color:var(--text-muted); margin:8px 0 0;}
+  .callout{margin-top:22px; padding:18px 20px; border:1px solid var(--border); border-left:3px solid var(--accent-amber); border-radius:10px; background:rgba(245,166,35,.08); color:var(--text-primary); font-size:14.5px;}
+  .resource-list{display:grid; gap:10px; margin-top:18px;}
+  .resource-item{background:var(--bg-panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; color:var(--text-muted); font-size:14px;}
+  .resource-item strong{color:var(--text-primary);} 
+  .feature-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px;}
+  @media(max-width:860px){.feature-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:720px){.feature-grid{grid-template-columns:1fr;}}
+  .feature-card{background:linear-gradient(135deg, rgba(17,27,46,.95), rgba(11,18,32,.95)); border:1px solid var(--border); border-radius:var(--radius); padding:20px;}
+  .feature-card h4{font-size:15px; margin-top:8px;}
+  .feature-card p{font-size:13.5px; color:var(--text-muted); margin:8px 0 0;}
+  .section-shell{background:linear-gradient(180deg, rgba(17,27,46,.92), rgba(14,23,40,.95)); border:1px solid var(--border); border-radius:20px; padding:28px 24px;}
+  .progress-bar{height:3px; width:100%; background:rgba(255,255,255,.06); position:sticky; top:0; z-index:60;}
+  .progress-bar span{display:block; height:100%; width:0; background:linear-gradient(90deg, var(--accent-amber), var(--accent-safe)); transition:width .1s ease;}
+
+  /* ===== CONTENT MODULES ===== */
+  .module{border-top:1px solid var(--border-soft); padding-top:44px; margin-top:44px;}
+  .module:first-child{border-top:none; padding-top:0; margin-top:0;}
+  .module-num{font-family:'JetBrains Mono',monospace; color:var(--text-dim); font-size:13px;}
+  .module h3{font-size:23px; margin-top:6px;}
+  .module .body-text{color:var(--text-muted); font-size:15px; max-width:70ch; margin-top:14px;}
+  .fraud-types{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:24px;}
+  @media(max-width:860px){.fraud-types{grid-template-columns:repeat(2,1fr);}}
+  .ft-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius); padding:16px;}
+  .ft-card .ic{font-size:20px;}
+  .ft-card h4{font-size:14px; margin-top:10px;}
+  .ft-card p{font-size:12.5px; color:var(--text-dim); margin:6px 0 0;}
+
+  /* Algorithm cards */
+  .algo-grid{display:grid; gap:16px; margin-top:24px;}
+  .algo-card{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px 24px; display:grid; grid-template-columns:180px 1fr; gap:22px; align-items:start;
+  }
+  @media(max-width:720px){.algo-card{grid-template-columns:1fr;}}
+  .algo-tag{
+    font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    display:inline-block; padding:4px 10px; border-radius:20px; margin-bottom:8px;
+  }
+  .algo-tag.super{background:rgba(52,211,153,.12); color:var(--accent-safe);}
+  .algo-tag.nosuper{background:rgba(245,166,35,.14); color:var(--accent-amber);}
+  .algo-card h4{font-size:17px;}
+  .algo-card .pc{display:flex; gap:20px; margin-top:12px; font-size:13px;}
+  .algo-card .pc div span{display:block; color:var(--text-dim); font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px;}
+  .algo-card .pc .pro{color:var(--accent-safe);}
+  .algo-card .pc .con{color:var(--accent-alert);}
+  .algo-card p.desc{color:var(--text-muted); font-size:14px; margin-top:4px;}
+
+  /* ===== INTERACTIVE THRESHOLD DEMO ===== */
+  .demo{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px 26px; margin-top:24px;
+  }
+  .demo-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;}
+  .demo-top h4{font-size:16px;}
+  .demo-top .val{font-family:'JetBrains Mono',monospace; color:var(--accent-amber); font-size:15px;}
+  input[type=range]{
+    width:100%; margin:18px 0 6px; accent-color:var(--accent-amber);
+    height:4px; background:var(--border); border-radius:4px;
+  }
+  .demo-scale{display:flex; justify-content:space-between; font-size:11px; color:var(--text-dim); font-family:'JetBrains Mono',monospace;}
+  .demo-results{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:22px;}
+  @media(max-width:720px){.demo-results{grid-template-columns:repeat(2,1fr);}}
+  .metric{background:var(--bg-panel-2); border:1px solid var(--border-soft); border-radius:8px; padding:14px;}
+  .metric .m-lbl{font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em;}
+  .metric .m-val{font-family:'JetBrains Mono',monospace; font-size:22px; margin-top:4px; font-weight:600;}
+  .cm-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px;}
+  .cm-cell{padding:10px; border-radius:8px; text-align:center; font-family:'JetBrains Mono',monospace; font-size:12px;}
+  .cm-cell .n{font-size:18px; font-weight:700; display:block;}
+  .cm-tp{background:var(--accent-safe-dim); color:var(--accent-safe);}
+  .cm-fp{background:var(--accent-alert-dim); color:var(--accent-alert);}
+  .cm-fn{background:rgba(245,166,35,.14); color:var(--accent-amber);}
+  .cm-tn{background:rgba(139,150,172,.1); color:var(--text-muted);}
+  .demo-note{font-size:12.5px; color:var(--text-dim); margin-top:16px; border-left:2px solid var(--border); padding-left:12px;}
+
+  /* ===== QUIZ ===== */
+  .quiz-card{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px 24px; margin-bottom:16px;
+  }
+  .quiz-card .qn{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dim);}
+  .quiz-card h4{font-size:15.5px; margin-top:6px; font-weight:600;}
+  .qoptions{display:grid; gap:9px; margin-top:14px;}
+  .qopt{
+    text-align:left; background:var(--bg-panel-2); border:1px solid var(--border-soft); color:var(--text-primary);
+    padding:11px 14px; border-radius:8px; font-size:13.5px; cursor:pointer; font-family:'Inter',sans-serif;
+    transition:border-color .15s, background .15s;
+  }
+  .qopt:hover{border-color:var(--text-dim);}
+  .qopt.correct{background:var(--accent-safe-dim); border-color:var(--accent-safe); color:var(--accent-safe);}
+  .qopt.incorrect{background:var(--accent-alert-dim); border-color:var(--accent-alert); color:var(--accent-alert);}
+  .qopt:disabled{cursor:default;}
+  .qfeedback{margin-top:12px; font-size:13px; color:var(--text-muted); display:none; padding-top:10px; border-top:1px solid var(--border-soft);}
+  .quiz-score{
+    background:var(--bg-panel); border:1px solid var(--accent-amber); border-radius:var(--radius);
+    padding:24px; text-align:center; margin-top:8px; display:none;
+  }
+  .quiz-score .score-num{font-family:'JetBrains Mono',monospace; font-size:36px; color:var(--accent-amber); font-weight:700;}
+
+  /* ===== GLOSARIO ===== */
+  .glossary{display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid var(--border-soft);}
+  @media(max-width:720px){.glossary{grid-template-columns:1fr;}}
+  .g-item{padding:16px 0; border-bottom:1px solid var(--border-soft);}
+  .glossary .g-item:nth-child(odd){padding-right:24px;}
+  .glossary .g-item:nth-child(even){padding-left:24px;}
+  @media(max-width:720px){.glossary .g-item:nth-child(even){padding-left:0;}}
+  .g-item dt{font-family:'JetBrains Mono',monospace; color:var(--accent-amber); font-size:13px;}
+  .g-item dd{margin:6px 0 0; color:var(--text-muted); font-size:13.5px;}
+
+  footer{border-top:1px solid var(--border-soft); padding:36px 0; text-align:center; color:var(--text-dim); font-size:12.5px;}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><span id="progressBar"></span></div>
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="mono">◆</span> OVA <b>·</b> Detección de Fraude Financiero</div>
+    <div class="navlinks">
+      <a href="#objetivos">Objetivos</a>
+      <a href="#ruta">Ruta</a>
+      <a href="#metodologia">Metodología</a>
+      <a href="#fraude">Contexto del problema</a>
+      <a href="#algoritmos">Algoritmos</a>
+      <a href="#laboratorio">Laboratorio</a>
+      <a href="#quiz">Evaluación</a>
+      <a href="#glosario">Glosario</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Objeto Virtual de Aprendizaje</div>
+      <h1>Detección de Fraudes Financieros con <span>Aprendizaje Automático</span></h1>
+      <p class="lead">Una experiencia formativa diseñada para comprender cómo la analítica predictiva y los modelos de aprendizaje automático fortalecen la seguridad financiera en entornos reales, rápidos y de alto riesgo.</p>
+      <div class="hero-badges">
+        <span>Seguridad financiera</span>
+        <span>Analítica predictiva</span>
+        <span>Aprendizaje automático</span>
+      </div>
+      <div class="pill">✓ Enfoque práctico • caso real • evaluación interactiva</div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">4</div><div class="lbl">Módulos</div></div>
+        <div class="stat"><div class="num">3</div><div class="lbl">Algoritmos clave</div></div>
+        <div class="stat"><div class="num">1</div><div class="lbl">Laboratorio interactivo</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">Preguntas de evaluación</div></div>
+      </div>
+    </div>
+    <div class="feed">
+      <div class="feed-head">
+        <span>Flujo de transacciones</span>
+        <span class="live">en vivo</span>
+      </div>
+      <div class="feed-body" id="feedBody"></div>
+    </div>
+  </div>
+</header>
+
+<section id="objetivos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">01 · Objetivos</div>
+      <h2>Al finalizar este OVA, serás capaz de:</h2>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-card"><div class="k">CONCEPTUAL</div><p>Explicar por qué el fraude financiero es un problema de clasificación con datos desbalanceados.</p></div>
+      <div class="obj-card"><div class="k">TÉCNICO</div><p>Comparar el funcionamiento de regresión logística, árboles de decisión/Random Forest y detección de anomalías.</p></div>
+      <div class="obj-card"><div class="k">ANALÍTICO</div><p>Interpretar una matriz de confusión y el trade-off entre precisión y recall al ajustar un umbral de decisión.</p></div>
+      <div class="obj-card"><div class="k">APLICADO</div><p>Relacionar cada algoritmo con un caso real de fraude bancario o de tarjetas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="ruta">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">02 · Ruta de aprendizaje</div>
+      <h2>Una propuesta más completa para aprender con criterio</h2>
+      <p>Este OVA no solo presenta conceptos, también guía al estudiante desde la comprensión del problema hasta la interpretación de resultados de un modelo.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-card"><div class="k">01</div><h4>Comprende el problema</h4><p>Identifica por qué el fraude financiero es una amenaza tanto económica como tecnológica.</p></div>
+      <div class="process-card"><div class="k">02</div><h4>Explora los algoritmos</h4><p>Compara enfoques supervisados y no supervisados para decidir cuál se adapta mejor.</p></div>
+      <div class="process-card"><div class="k">03</div><h4>Experimenta con datos</h4><p>Modifica el umbral para ver cómo cambian precisión, recall y equilibrio del sistema.</p></div>
+      <div class="process-card"><div class="k">04</div><h4>Evalúa tu aprendizaje</h4><p>Resuelve preguntas que consolidan el conocimiento y te preparan para aplicarlo.</p></div>
+    </div>
+    <div class="callout">La intención de este recurso es formar una mirada crítica: no solo saber qué algoritmo usar, sino también entender cuándo un modelo puede fallar y qué métricas deben priorizarse.</div>
+  </div>
+</section>
+
+<section id="metodologia" style="background:var(--bg-panel-2); border-top:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">03 · Metodología formativa</div>
+      <h2>Una estructura que combina teoría, práctica y análisis de decisiones</h2>
+      <p>La propuesta está diseñada para que el estudiante avance de forma progresiva, pasando de la comprensión conceptual a la aplicación de métricas reales del desempeño de un modelo.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="k">CONCEPTUAL</div><h4>Fundamentos del fraude</h4><p>Se explican los patrones, riesgos y retos que hacen del fraude un problema complejo en finanzas.</p></div>
+      <div class="feature-card"><div class="k">ANALÍTICO</div><h4>Interpretación de métricas</h4><p>Se trabaja con precisión, recall, F1-score y exactitud para entender el impacto de cada decisión del modelo.</p></div>
+      <div class="feature-card"><div class="k">APLICADO</div><h4>Simulación interactiva</h4><p>El laboratorio permite ajustar el umbral y observar el efecto inmediato sobre la clasificación de transacciones.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="fraude" style="background:var(--bg-panel-2); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">02 · Contexto del problema</div>
+      <h2>¿Qué es el fraude financiero y por qué representa un reto para los sistemas actuales?</h2>
+      <p>El fraude financiero es cualquier acto que busca obtener un beneficio económico ilegítimo engañando a una persona, banco o sistema. El reto no es solo detectarlo, sino hacerlo entre millones de transacciones legítimas, en milisegundos, sin bloquear compras reales.</p>
+    </div>
+
+    <div class="module">
+      <div class="module-num">2.1</div>
+      <h3>Tipos comunes de fraude financiero</h3>
+      <div class="fraud-types">
+        <div class="ft-card"><div class="ic">💳</div><h4>Tarjeta no presente</h4><p>Compras en línea con datos de tarjeta robados.</p></div>
+        <div class="ft-card"><div class="ic">🏦</div><h4>Transferencias</h4><p>Movimientos no autorizados entre cuentas.</p></div>
+        <div class="ft-card"><div class="ic">🕵️</div><h4>Suplantación de identidad</h4><p>Apertura de cuentas con identidad robada.</p></div>
+        <div class="ft-card"><div class="ic">🔄</div><h4>Lavado de activos</h4><p>Patrones de transacciones para ocultar origen ilícito.</p></div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-num">2.2</div>
+      <h3>El desafío del desbalance de clases</h3>
+      <p class="body-text">En un conjunto de datos real, el fraude suele representar menos del 1% de las transacciones. Un modelo que siempre prediga "no es fraude" tendría más del 99% de exactitud (accuracy) y, sin embargo, sería completamente inútil. Por eso, en este dominio se priorizan métricas como <strong>precisión</strong> (de lo que marco como fraude, ¿cuánto lo es realmente?) y <strong>recall</strong> (de todo el fraude real, ¿cuánto logré detectar?).</p>
+    </div>
+  </div>
+</section>
+
+<section id="algoritmos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">03 · Modelos de aprendizaje automático</div>
+      <h2>Tres enfoques metodológicos para la detección de fraude</h2>
+      <p>Cada algoritmo aborda el problema desde un ángulo distinto: aprender de ejemplos etiquetados, dividir el espacio de decisión, o detectar lo que se sale de lo normal.</p>
+    </div>
+
+    <div class="algo-grid">
+      <div class="algo-card">
+        <div>
+          <span class="algo-tag super">Supervisado</span>
+          <h4>Regresión Logística</h4>
+        </div>
+        <div>
+          <p class="desc">Calcula la probabilidad de que una transacción sea fraudulenta a partir de variables como el monto, la hora o la ubicación, usando una función que convierte esa combinación en un valor entre 0 y 1.</p>
+          <div class="pc">
+            <div class="pro"><span>Ventaja</span>Rápido, interpretable, fácil de auditar en un banco.</div>
+            <div class="con"><span>Limitación</span>Solo captura relaciones lineales entre variables.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card">
+        <div>
+          <span class="algo-tag super">Supervisado</span>
+          <h4>Árboles de Decisión &amp; Random Forest</h4>
+        </div>
+        <div>
+          <p class="desc">Un árbol divide los datos con preguntas sucesivas ("¿monto &gt; $2M?", "¿país distinto al habitual?"). Random Forest combina cientos de árboles entrenados con muestras distintas y promedia sus votos, reduciendo el sobreajuste de un árbol individual.</p>
+          <div class="pc">
+            <div class="pro"><span>Ventaja</span>Captura relaciones no lineales e interacciones entre variables.</div>
+            <div class="con"><span>Limitación</span>Un árbol muy profundo memoriza el ruido (overfitting); Random Forest lo mitiga a costa de interpretabilidad.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="algo-card">
+        <div>
+          <span class="algo-tag nosuper">No supervisado</span>
+          <h4>Detección de anomalías (Isolation Forest)</h4>
+        </div>
+        <div>
+          <p class="desc">En lugar de aprender "qué es fraude", aprende "qué es normal" y marca como sospechoso todo lo que se aísla fácilmente del resto de los datos. Es clave cuando hay pocos o ningún ejemplo etiquetado de fraude, o para detectar tipos de fraude nunca antes vistos.</p>
+          <div class="pc">
+            <div class="pro"><span>Ventaja</span>No depende de tener fraudes ya etiquetados; detecta patrones nuevos.</div>
+            <div class="con"><span>Limitación</span>Más falsos positivos; requiere definir qué tan "anómalo" es suficiente.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="caso" style="background:var(--bg-panel-2); border-top:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">04 · Caso de referencia</div>
+      <h2>Un escenario cercano a la realidad del sector financiero</h2>
+      <p>En una institución bancaria, cada transacción se evalúa en milisegundos. Un sistema de detección debe equilibrar seguridad, experiencia del cliente y cumplimiento operacional.</p>
+    </div>
+    <div class="section-shell">
+      <div class="feature-grid">
+        <div class="feature-card"><div class="k">ESCENARIO</div><h4>Transacción sospechosa</h4><p>Una compra internacional de alto valor aparece en un horario inusual para el cliente.</p></div>
+        <div class="feature-card"><div class="k">RESPUESTA</div><h4>Evaluación automática</h4><p>El modelo asigna un puntaje de riesgo que permite decidir si se aprueba, bloquea o revisa manualmente.</p></div>
+        <div class="feature-card"><div class="k">IMPACTO</div><h4>Decisión de negocio</h4><p>La elección del umbral define si se evita fraude o si se afecta la experiencia del usuario.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="laboratorio" style="background:var(--bg-panel-2); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">04 · Laboratorio interactivo</div>
+      <h2>Análisis del umbral de decisión</h2>
+      <p>Un modelo de fraude asigna a cada transacción un puntaje de riesgo de 0 a 100. Tú decides a partir de qué puntaje el sistema la marca como fraude. Mueve el control y observa cómo cambia la matriz de confusión.</p>
+    </div>
+
+    <div class="demo">
+      <div class="demo-top">
+        <h4>Umbral de clasificación</h4>
+        <span class="val mono" id="thVal">Umbral: 50</span>
+      </div>
+      <input type="range" id="threshold" min="0" max="100" value="50">
+      <div class="demo-scale"><span>0 · marca casi todo como fraude</span><span>100 · marca casi nada como fraude</span></div>
+
+      <div class="cm-grid">
+        <div class="cm-cell cm-tp"><span class="n" id="tpN">0</span>Verdaderos positivos<br>(fraude detectado)</div>
+        <div class="cm-cell cm-fp"><span class="n" id="fpN">0</span>Falsos positivos<br>(cliente inocente bloqueado)</div>
+        <div class="cm-cell cm-fn"><span class="n" id="fnN">0</span>Falsos negativos<br>(fraude no detectado)</div>
+        <div class="cm-cell cm-tn"><span class="n" id="tnN">0</span>Verdaderos negativos<br>(legítimo aprobado)</div>
+      </div>
+
+      <div class="demo-results">
+        <div class="metric"><div class="m-lbl">Precisión</div><div class="m-val" id="precVal">–</div></div>
+        <div class="metric"><div class="m-lbl">Recall</div><div class="m-val" id="recVal">–</div></div>
+        <div class="metric"><div class="m-lbl">F1-score</div><div class="m-val" id="f1Val">–</div></div>
+        <div class="metric"><div class="m-lbl">Exactitud</div><div class="m-val" id="accVal">–</div></div>
+      </div>
+      <div class="demo-note" id="demoNote">Simulación sobre 40 transacciones de referencia (8 fraudulentas, 32 legítimas). Un umbral bajo detecta más fraude pero molesta a más clientes legítimos; un umbral alto hace lo contrario.</div>
+    </div>
+  </div>
+</section>
+
+<section id="recursos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">05 · Recursos de apoyo</div>
+      <h2>Ideas clave para reforzar el aprendizaje</h2>
+    </div>
+    <div class="resource-list">
+      <div class="resource-item"><strong>Indicador de riesgo:</strong> una alerta muy agresiva puede detectar más fraude, pero también bloquear clientes legítimos.</div>
+      <div class="resource-item"><strong>Decisión de negocio:</strong> en banca y finanzas, el equilibrio entre falsos positivos y falsos negativos es tan importante como el rendimiento técnico.</div>
+      <div class="resource-item"><strong>Valor pedagógico:</strong> este OVA ayuda a construir pensamiento analítico, no solo memorizar definiciones.</div>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">05 · Evaluación del aprendizaje</div>
+      <h2>Verificación de los aprendizajes adquiridos</h2>
+      <p>Responde las siguientes preguntas. Recibirás retroalimentación inmediata en cada una.</p>
+    </div>
+    <div id="quizContainer"></div>
+    <div class="quiz-score" id="quizScore">
+      <div class="m-lbl">Resultado</div>
+      <div class="score-num"><span id="scoreN">0</span>/6</div>
+      <p id="scoreMsg" style="color:var(--text-muted); margin-top:8px;"></p>
+    </div>
+  </div>
+</section>
+
+<section id="glosario" style="background:var(--bg-panel-2); border-top:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">06 · Glosario técnico</div>
+      <h2>Términos clave del dominio</h2>
+    </div>
+    <dl class="glossary">
+      <div class="g-item"><dt>Falso positivo</dt><dd>Transacción legítima marcada incorrectamente como fraude.</dd></div>
+      <div class="g-item"><dt>Falso negativo</dt><dd>Transacción fraudulenta que el modelo no detecta.</dd></div>
+      <div class="g-item"><dt>Precisión</dt><dd>Proporción de alertas de fraude que efectivamente son fraude.</dd></div>
+      <div class="g-item"><dt>Recall (sensibilidad)</dt><dd>Proporción del fraude real que el modelo logra detectar.</dd></div>
+      <div class="g-item"><dt>Overfitting</dt><dd>Cuando un modelo memoriza los datos de entrenamiento y pierde capacidad de generalizar.</dd></div>
+      <div class="g-item"><dt>Dataset desbalanceado</dt><dd>Conjunto de datos donde una clase (el fraude) es mucho menos frecuente que la otra.</dd></div>
+      <div class="g-item"><dt>Isolation Forest</dt><dd>Algoritmo no supervisado que detecta anomalías aislando observaciones atípicas.</dd></div>
+      <div class="g-item"><dt>Umbral (threshold)</dt><dd>Valor de puntaje a partir del cual una transacción se clasifica como fraude.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  Objeto Virtual de Aprendizaje · Detección de Fraudes Financieros con Algoritmos de Aprendizaje Automático<br>
+  <span style="display:block; margin-top:8px; color:var(--text-dim);">Diseñado como recurso de formación digital, con enfoque en comprensión conceptual, análisis de métricas y aplicación práctica.</span>
+</footer>
+
+<script>
+/* ===== Live transaction feed ===== */
+const merchants = ["Amazon MX","Tienda Local","Uber","Netflix","Farmacia Cruz","Steam Games","Aerolínea LATAM","Restaurante El Faro","Falabella","Rappi","Casino Online XZ","Transferencia Intl.","Gasolinera Shell","Spotify","Electrodomésticos Sur"];
+const progressBar = document.getElementById('progressBar');
+
+function updateProgressBar(){
+  const scrollTop = window.scrollY;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
+  progressBar.style.width = `${percent}%`;
+}
+
+window.addEventListener('scroll', updateProgressBar);
+window.addEventListener('load', updateProgressBar);
+const feedBody = document.getElementById('feedBody');
+let txCounter = 1000;
+
+function randomTx(){
+  const isFraud = Math.random() < 0.18;
+  const merchant = merchants[Math.floor(Math.random()*merchants.length)];
+  const amt = isFraud ? (Math.random()*4500+800) : (Math.random()*300+5);
+  return { id: txCounter++, merchant, amt: amt.toFixed(2), isFraud };
+}
+
+function addTxRow(){
+  const tx = randomTx();
+  const row = document.createElement('div');
+  row.className = 'tx-row';
+  row.innerHTML = `
+    <span class="id">#${tx.id}</span>
+    <span class="merchant">${tx.merchant}</span>
+    <span class="amt">$${tx.amt}</span>
+    <span class="tag ${tx.isFraud ? 'fraud':'ok'}">${tx.isFraud ? 'FRAUDE':'OK'}</span>
+  `;
+  feedBody.insertBefore(row, feedBody.firstChild);
+  while(feedBody.children.length > 8){ feedBody.removeChild(feedBody.lastChild); }
+}
+for(let i=0;i<7;i++) addTxRow();
+setInterval(addTxRow, 1700);
+
+/* ===== Threshold demo ===== */
+// score, isFraud
+const dataset = [
+  {s:92,f:1},{s:88,f:1},{s:81,f:1},{s:76,f:1},{s:69,f:1},{s:61,f:1},{s:54,f:1},{s:47,f:1},
+  {s:8,f:0},{s:12,f:0},{s:5,f:0},{s:19,f:0},{s:22,f:0},{s:14,f:0},{s:9,f:0},{s:27,f:0},
+  {s:31,f:0},{s:17,f:0},{s:6,f:0},{s:24,f:0},{s:38,f:0},{s:44,f:0},{s:11,f:0},{s:29,f:0},
+  {s:52,f:0},{s:35,f:0},{s:15,f:0},{s:41,f:0},{s:7,f:0},{s:20,f:0},{s:33,f:0},{s:10,f:0},
+  {s:58,f:0},{s:16,f:0},{s:23,f:0},{s:13,f:0},{s:46,f:0},{s:28,f:0},{s:18,f:0},{s:37,f:0}
+];
+
+const thInput = document.getElementById('threshold');
+const thVal = document.getElementById('thVal');
+const els = {
+  tp: document.getElementById('tpN'), fp: document.getElementById('fpN'),
+  fn: document.getElementById('fnN'), tn: document.getElementById('tnN'),
+  prec: document.getElementById('precVal'), rec: document.getElementById('recVal'),
+  f1: document.getElementById('f1Val'), acc: document.getElementById('accVal')
+};
+
+function computeMetrics(threshold){
+  let tp=0, fp=0, fn=0, tn=0;
+  dataset.forEach(d => {
+    const predictedFraud = d.s >= threshold;
+    if(predictedFraud && d.f===1) tp++;
+    else if(predictedFraud && d.f===0) fp++;
+    else if(!predictedFraud && d.f===1) fn++;
+    else tn++;
+  });
+  const precision = tp+fp === 0 ? 0 : tp/(tp+fp);
+  const recall = tp+fn === 0 ? 0 : tp/(tp+fn);
+  const f1 = (precision+recall) === 0 ? 0 : 2*precision*recall/(precision+recall);
+  const acc = (tp+tn)/dataset.length;
+  return {tp,fp,fn,tn,precision,recall,f1,acc};
+}
+
+function renderDemo(){
+  const threshold = parseInt(thInput.value,10);
+  thVal.textContent = `Umbral: ${threshold}`;
+  const m = computeMetrics(threshold);
+  els.tp.textContent = m.tp; els.fp.textContent = m.fp; els.fn.textContent = m.fn; els.tn.textContent = m.tn;
+  els.prec.textContent = (m.precision*100).toFixed(0)+'%';
+  els.rec.textContent = (m.recall*100).toFixed(0)+'%';
+  els.f1.textContent = (m.f1*100).toFixed(0)+'%';
+  els.acc.textContent = (m.acc*100).toFixed(0)+'%';
+
+  const note = document.getElementById('demoNote');
+  if(threshold <= 20){
+    note.textContent = 'Umbral bajo: casi todo el fraude se detecta (recall alto), pero muchos clientes legítimos son bloqueados por error (precisión baja).';
+  } else if(threshold >= 70){
+    note.textContent = 'Umbral alto: casi ningún cliente legítimo es molestado (precisión alta), pero se deja pasar más fraude sin detectar (recall bajo).';
+  } else {
+    note.textContent = 'Zona intermedia: se busca el equilibrio entre detectar fraude y no molestar a clientes legítimos, medido con el F1-score.';
+  }
+}
+thInput.addEventListener('input', renderDemo);
+renderDemo();
+
+/* ===== Quiz ===== */
+const questions = [
+  {
+    q:"¿Cuál es el principal desafío al entrenar un modelo de ML para detectar fraude?",
+    opts:["Que hay demasiadas variables numéricas","Que las transacciones fraudulentas son una fracción muy pequeña del total (datos desbalanceados)","Que los bancos no permiten usar Python","Que el fraude solo ocurre de noche"],
+    correct:1,
+    fb:"Correcto: el fraude suele ser menos del 1% de las transacciones, lo que obliga a usar métricas distintas a la exactitud simple."
+  },
+  {
+    q:"Si un modelo tiene 99.4% de exactitud (accuracy) pero el fraude representa el 0.5% de los datos, ¿qué se debe revisar antes de celebrar?",
+    opts:["Nada, esa exactitud ya es suficiente","Si el modelo realmente está detectando el fraude (recall) o solo prediciendo 'no fraude' siempre","El color del dashboard","La versión de Python usada"],
+    correct:1,
+    fb:"Correcto: con clases desbalanceadas, la exactitud puede ser engañosa. Hay que revisar precisión y recall."
+  },
+  {
+    q:"Isolation Forest es un algoritmo principalmente usado para:",
+    opts:["Clasificación supervisada con etiquetas balanceadas","Detección de anomalías, aislando observaciones atípicas","Reducir el tamaño de una base de datos","Encriptar transacciones bancarias"],
+    correct:1,
+    fb:"Correcto: Isolation Forest aprende qué es 'normal' y aísla lo que se comporta distinto, sin necesitar etiquetas de fraude."
+  },
+  {
+    q:"Un árbol de decisión demasiado profundo tiende a:",
+    opts:["Generalizar mejor a datos nuevos","Sobreajustarse (overfitting) memorizando el ruido de entrenamiento","Volverse un modelo no supervisado","Ejecutarse más rápido siempre"],
+    correct:1,
+    fb:"Correcto: la profundidad excesiva hace que el árbol memorice particularidades del set de entrenamiento en vez de aprender patrones generales."
+  },
+  {
+    q:"En el laboratorio de umbral, si baja el umbral de decisión hacia 0, ¿qué suele ocurrir?",
+    opts:["Sube la precisión y baja el recall","Sube el recall pero baja la precisión (más falsos positivos)","No cambia ninguna métrica","El modelo deja de funcionar"],
+    correct:1,
+    fb:"Correcto: un umbral bajo marca más transacciones como fraude, detectando más casos reales (recall alto) pero también más falsas alarmas."
+  },
+  {
+    q:"¿Qué tipo de aprendizaje usa la regresión logística en este contexto?",
+    opts:["No supervisado, porque no usa datos históricos","Supervisado, porque aprende a partir de transacciones ya etiquetadas como fraude o no fraude","Por refuerzo, porque recibe premios y castigos","Ninguno, es una regla fija escrita a mano"],
+    correct:1,
+    fb:"Correcto: la regresión logística necesita ejemplos históricos etiquetados para aprender la relación entre variables y probabilidad de fraude."
+  }
+];
+
+const quizContainer = document.getElementById('quizContainer');
+let answered = 0, score = 0;
+
+questions.forEach((item, qi) => {
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `
+    <div class="qn">Pregunta ${qi+1} de ${questions.length}</div>
+    <h4>${item.q}</h4>
+    <div class="qoptions">
+      ${item.opts.map((o,oi)=>`<button class="qopt" data-i="${oi}">${o}</button>`).join('')}
+    </div>
+    <div class="qfeedback"></div>
+  `;
+  quizContainer.appendChild(card);
+
+  const buttons = card.querySelectorAll('.qopt');
+  const feedback = card.querySelector('.qfeedback');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(card.dataset.done) return;
+      card.dataset.done = "1";
+      const chosen = parseInt(btn.dataset.i,10);
+      buttons.forEach(b => {
+        b.disabled = true;
+        const bi = parseInt(b.dataset.i,10);
+        if(bi === item.correct) b.classList.add('correct');
+        else if(bi === chosen) b.classList.add('incorrect');
+      });
+      feedback.style.display = 'block';
+      feedback.textContent = (chosen === item.correct ? '✓ ' : '✗ ') + item.fb;
+      if(chosen === item.correct) score++;
+      answered++;
+      if(answered === questions.length){
+        const scoreBox = document.getElementById('quizScore');
+        document.getElementById('scoreN').textContent = score;
+        let msg = '';
+        if(score === questions.length) msg = 'Excelente: dominas los conceptos clave del módulo.';
+        else if(score >= questions.length-2) msg = 'Buen resultado. Revisa las preguntas falladas antes de continuar.';
+        else msg = 'Te recomendamos repasar los módulos 2 y 3 antes de avanzar.';
+        document.getElementById('scoreMsg').textContent = msg;
+        scoreBox.style.display = 'block';
+        scoreBox.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
