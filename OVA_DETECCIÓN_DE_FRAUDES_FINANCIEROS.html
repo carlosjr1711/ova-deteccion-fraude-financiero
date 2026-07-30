@@ -72,6 +72,24 @@
     .nav-links button{background:transparent; border:none; color:var(--text-muted); padding:10px 12px; border-radius:999px; transition:all .2s ease; cursor:pointer;}
     .nav-links button:hover, .nav-links button.active{color:var(--text); background:rgba(255,255,255,.06);}
     .nav-links button.active{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);}
+    .floating-theme{
+      position:fixed;
+      top:20px;
+      right:20px;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:1px solid var(--border);
+      background:var(--bg-panel);
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      box-shadow:var(--shadow-soft);
+      cursor:pointer;
+      z-index:30;
+      transition:transform .2s ease, background .3s ease, box-shadow .3s ease;
+    }
+    .floating-theme:hover{transform:translateY(-2px); box-shadow:0 20px 40px rgba(0,0,0,.18);}
     .actions{display:flex; align-items:center; gap:12px;}
     .btn{display:inline-flex; align-items:center; gap:10px; border:none; border-radius:999px; padding:14px 20px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease, background .2s ease;}
     .btn.primary{background:linear-gradient(135deg, var(--accent), #ffb703); color:#08111f; font-weight:700;}
@@ -199,8 +217,8 @@
       <div class="brand"><span class="dot"></span><div><strong>OVA FraudShield</strong><span>Detección de fraude financiero</span></div></div>
       <div class="actions">
         <button class="btn secondary" id="menuToggle">Menú</button>
-        <button class="btn primary" id="themeToggle">Modo claro</button>
       </div>
+      <button class="floating-theme" id="themeToggle" aria-label="Cambiar tema">🌙</button>
       <div class="nav-links" id="navLinks">
         <button data-view-target="view-overview" class="active">Inicio</button>
         <button data-view-target="view-objectives">Objetivos</button>
@@ -422,36 +440,29 @@
     }
 
     navButtons.forEach(btn => btn.addEventListener('click', () => setActiveView(btn.dataset.viewTarget)));
+    document.querySelectorAll('.nav-pill').forEach(pill => pill.addEventListener('click', () => {
+      document.querySelectorAll('.nav-pill').forEach(p => p.classList.toggle('active', p === pill));
+      setActiveView(pill.dataset.viewTarget);
+    }));
     menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 
     const hash = window.location.hash.replace('#','');
     const initialView = hash && document.getElementById(hash) ? hash : 'view-overview';
     setTimeout(() => setActiveView(initialView), 50);
 
+    function updateThemeButton(isLight) {
+      themeToggle.textContent = isLight ? '☀️' : '🌙';
+      themeToggle.setAttribute('aria-label', isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+    }
     themeToggle.addEventListener('click', () => {
       const isLight = document.body.classList.toggle('light-theme');
-      themeToggle.textContent = isLight ? 'Modo oscuro' : 'Modo claro';
+      updateThemeButton(isLight);
       localStorage.setItem('ova-theme', isLight ? 'light' : 'dark');
     });
     const savedTheme = localStorage.getItem('ova-theme');
-    if(savedTheme === 'light'){
-      document.body.classList.add('light-theme');
-      themeToggle.textContent = 'Modo oscuro';
-    } else {
-      themeToggle.textContent = 'Modo claro';
-    }
-
-    const progressBar = document.getElementById('progressBar');
-    function updateProgressBar(){
-      const activeView = document.querySelector('.view.active, .hero-section.active');
-      const top = activeView.getBoundingClientRect().top;
-      const height = activeView.scrollHeight - window.innerHeight;
-      const percent = height > 0 ? Math.min(100, Math.max(0, (window.scrollY - activeView.offsetTop) / height * 100)) : 0;
-      progressBar.style.width = percent + '%';
-    }
-    window.addEventListener('scroll', updateProgressBar);
-    window.addEventListener('resize', updateProgressBar);
-    updateProgressBar();
+    const initialLight = savedTheme === 'light';
+    if (initialLight) document.body.classList.add('light-theme');
+    updateThemeButton(initialLight);
 
     const merchants = ["Amazon MX","Tienda Local","Uber","Netflix","Farmacia Cruz","Steam Games","Aerolínea LATAM","Restaurante El Faro","Falabella","Rappi","Casino Online XZ","Transferencia Intl.","Gasolinera Shell","Spotify","Electrodomésticos Sur"];
     const feedBody = document.getElementById('feedBody');
