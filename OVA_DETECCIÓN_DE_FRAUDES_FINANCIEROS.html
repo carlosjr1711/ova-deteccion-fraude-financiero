@@ -128,7 +128,7 @@
     .tag{display:inline-flex; align-items:center; justify-content:center; padding:6px 10px; border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.03em;}
     .tag.ok{background:rgba(34,197,94,.10); color:var(--success);}
     .tag.fraud{background:rgba(251,113,133,.10); color:var(--danger);}    
-    .app-main{max-width:1180px; margin:0 auto; padding:0 24px 48px;}
+    .app-main{max-width:1180px; margin:48px auto 0; padding:0 24px 48px;}
     .view{display:none; animation:fadeIn .4s ease both;}
     .view.active{display:block;}
     .section-heading{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:28px;}
@@ -214,7 +214,7 @@
       <div class="actions">
         <button class="btn secondary" id="menuToggle">Menú</button>
       </div>
-      <button class="floating-theme" id="themeToggle" aria-label="Cambiar tema">🌙</button>
+      <button class="floating-theme" id="themeToggle" aria-label="Cambiar tema">☀️</button>
       <div class="nav-links" id="navLinks">
         <button data-view-target="view-overview" class="active">Inicio</button>
         <button data-view-target="view-objectives">Objetivos</button>
@@ -316,7 +316,7 @@
       <div class="feature-grid">
         <details class="algorithm-card" open>
           <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Regresión logística</h3></div></summary>
-          <div class="details-content"><p>Estimación de probabilidades basada en variables transaccionales y de comportamiento. Es ideal para decisiones rápidas y modelos explicables.</p>
+          <div class="details-content"><p>Estimación de probabilidades basada en variables transaccionales y de comportamiento. Es ideal para decisiones rápidas y modelos explicables.</p><p>Se utiliza cuando se necesita interpretar claramente qué factores elevan el riesgo de fraude y se cuenta con datos históricos etiquetados.</p>
           <div class="pros-cons">
             <div class="small-card"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
             <div class="small-card"><span>Limitación</span><strong>Captura solo relaciones lineales</strong></div>
@@ -324,7 +324,7 @@
         </details>
         <details class="algorithm-card">
           <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
-          <div class="details-content"><p>Divide el problema con reglas de decisión. Random Forest mejora robustez al combinar múltiples árboles y reducir el sobreajuste.</p>
+          <div class="details-content"><p>Divide el problema con reglas de decisión. Random Forest mejora robustez al combinar múltiples árboles y reducir el sobreajuste.</p><p>Es útil para datos con interacciones complejas y cuando se busca mayor estabilidad frente a variaciones en el conjunto de entrenamiento.</p>
           <div class="pros-cons">
             <div class="small-card"><span>Ventaja</span><strong>Captura interacciones no lineales</strong></div>
             <div class="small-card"><span>Limitación</span><strong>Menos interpretable que un solo árbol</strong></div>
@@ -332,7 +332,7 @@
         </details>
         <details class="algorithm-card">
           <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
-          <div class="details-content"><p>Detecta lo que no se parece al resto del conjunto. Funciona bien cuando hay pocos ejemplos de fraude o tipos nuevos de ataque.</p>
+          <div class="details-content"><p>Detecta lo que no se parece al resto del conjunto. Funciona bien cuando hay pocos ejemplos de fraude o tipos nuevos de ataque.</p><p>Operar sin necesidad de etiquetas completas lo hace adecuado para descubrir anomalías emergentes que no estaban presentes en el entrenamiento.</p>
           <div class="pros-cons">
             <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías no etiquetadas</strong></div>
             <div class="small-card"><span>Limitación</span><strong>Puede generar falsos positivos</strong></div>
@@ -449,7 +449,7 @@
     function updateThemeButton(isLight) {
       const sun = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.9 4.9l1.4 1.4"></path><path d="M17.7 17.7l1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.9 19.1l1.4-1.4"></path><path d="M17.7 6.3l1.4-1.4"></path></svg>`;
       const moon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-      themeToggle.innerHTML = isLight ? sun : moon;
+      themeToggle.innerHTML = isLight ? moon : sun;
       themeToggle.setAttribute('aria-label', isLight ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
     }
     themeToggle.addEventListener('click', () => {
