@@ -210,7 +210,7 @@
 <body>
   <div class="topbar">
     <div class="wrap">
-      <div class="brand"><span class="dot"></span><div><strong>OVA</strong><span>Detección de fraude financiero</span></div></div>
+      <div class="brand"><span class="dot"></span><div><strong>OVA</strong><span> - Detección de fraude financiero</span></div></div>
       <div class="actions">
         <button class="btn secondary" id="menuToggle">Menú</button>
       </div>
@@ -324,15 +324,15 @@
         </details>
         <details class="algorithm-card">
           <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
-          <div class="details-content"><p>Divide el problema con reglas de decisión. Random Forest mejora robustez al combinar múltiples árboles y reducir el sobreajuste.</p><p>Es útil para datos con interacciones complejas y cuando se busca mayor estabilidad frente a variaciones en el conjunto de entrenamiento.</p>
+          <div class="details-content"><p>Construye una colección de árboles de decisión entrenados sobre diferentes subconjuntos del dataset, y combina sus predicciones para mejorar la estabilidad.</p><p>Funciona generando múltiples arboles a partir de muestras aleatorias de características y registros, luego promedia o vota sus resultados para reducir el sobreajuste.</p><p>Se utiliza cuando los datos tienen relaciones no lineales, interacciones entre variables y se necesita un modelo robusto ante ruido y variaciones.</p>
           <div class="pros-cons">
-            <div class="small-card"><span>Ventaja</span><strong>Captura interacciones no lineales</strong></div>
+            <div class="small-card"><span>Ventaja</span><strong>Alta precisión y robustez</strong></div>
             <div class="small-card"><span>Limitación</span><strong>Menos interpretable que un solo árbol</strong></div>
           </div></div>
         </details>
         <details class="algorithm-card">
           <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
-          <div class="details-content"><p>Detecta lo que no se parece al resto del conjunto. Funciona bien cuando hay pocos ejemplos de fraude o tipos nuevos de ataque.</p><p>Operar sin necesidad de etiquetas completas lo hace adecuado para descubrir anomalías emergentes que no estaban presentes en el entrenamiento.</p>
+          <div class="details-content"><p>Localiza observaciones atípicas al aislarlas en árboles de decisión construidos con particiones aleatorias.</p><p>Funciona creando múltiples particiones en el espacio de características; las observaciones anómalas se aíslan con menos particiones que los datos normales.</p><p>Se utiliza cuando no hay suficientes etiquetas de fraude disponibles y se quiere detectar patrones nuevos o desconocidos de comportamiento irregular.</p>
           <div class="pros-cons">
             <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías no etiquetadas</strong></div>
             <div class="small-card"><span>Limitación</span><strong>Puede generar falsos positivos</strong></div>
