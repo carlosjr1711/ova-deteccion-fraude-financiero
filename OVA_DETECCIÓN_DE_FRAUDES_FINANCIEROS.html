@@ -482,8 +482,32 @@
             <button class="scenario-button" data-scenario="mixed">Casos mixtos</button>
           </div>
           <div class="cases-panel" id="casePanel">
-            <div class="case-card"><strong>Vista de casos</strong><p id="caseSummary">Ajusta el umbral y selecciona un escenario para explorar ejemplos concretos de transacciones reales.</p></div>
+            <div class="case-card case-summary"><strong>Prueba transacciones</strong><p id="caseSummary">Selecciona un escenario y clasifica cada caso para ver si tu intuición coincide con el resultado real del modelo y del umbral.</p></div>
             <div class="case-list" id="caseList"></div>
+          </div>
+          <div class="lab-interactive" id="labInteractive">
+            <div class="interactive-top">
+              <div>
+                <h4>Simula un caso nuevo</h4>
+                <p>Genera una transacción aleatoria y decide si es fraude o legítima según el umbral.</p>
+              </div>
+              <button class="lab-button" id="newCaseBtn">Generar caso</button>
+            </div>
+            <div class="interactive-case" id="interactiveCase">
+              <div class="case-card">
+                <div class="case-top">
+                  <strong id="interactiveId">TX-001 · Caso aleatorio</strong>
+                  <span class="case-prediction">Umbral actual: <strong id="interactivePred">–</strong></span>
+                </div>
+                <span id="interactiveDesc">Selecciona “Generar caso” para iniciar la prueba.</span>
+                <div class="case-meta"><span id="interactiveScore">Score: –</span><span id="interactiveResult">Resultado real: –</span></div>
+                <div class="case-actions">
+                  <button class="case-guess" data-guess="Fraude">Marcar como fraude</button>
+                  <button class="case-guess" data-guess="Legítima">Marcar como legítima</button>
+                </div>
+                <div class="case-feedback" id="interactiveFeedback">Pulsa un botón para comparar tu decisión con el resultado real.</div>
+              </div>
+            </div>
           </div>
           <p class="demo-note" id="demoNote">Simulación sobre 40 transacciones de referencia (8 fraudulentas, 32 legítimas). Ajusta el umbral para ver cómo cambia el balance entre detecciones y alertas falsas.</p>
           <div class="lab-insight" id="labInsight">Encuentra el umbral que mejor equilibra la detección de fraude con la experiencia del cliente.</div>
@@ -695,6 +719,7 @@
         note.textContent = 'Zona balanceada: aquí se busca mantener un equilibrio adecuado entre detección de fraude y experiencia del usuario.';
       }
       renderCases(activeScenario, threshold);
+      updateInteractivePrediction();
     }
     thInput.addEventListener('input', renderDemo);
     const labButtons = document.querySelectorAll('.lab-button');
@@ -710,23 +735,66 @@
       {id:'TX-217', risk:'Mixto', score:49, actual:'Fraude', description:'Transacción atípica desde dispositivo nuevo.', category:'mixed'},
       {id:'TX-232', risk:'Bajo riesgo', score:24, actual:'Legítima', description:'Pequeña compra en comercios habituales.', category:'low-risk'}
     ];
+    let currentInteractive = null;
+    function updatePredictedLabel(score, threshold){
+      return score >= threshold ? 'Fraude' : 'Legítima';
+    }
+    function updateInteractivePrediction(){
+      if(!currentInteractive) return;
+      const threshold = parseInt(thInput.value,10);
+      const predicted = updatePredictedLabel(currentInteractive.score, threshold);
+      const interactivePred = document.getElementById('interactivePred');
+      if(interactivePred) interactivePred.textContent = predicted;
+    }
     function renderCases(scenario, threshold){
       const selected = sampleCases.filter(c => scenario === 'all' ? true : c.category === scenario);
-      caseList.innerHTML = selected.slice(0,3).map(c => `
-        <div class="case-card">
-          <strong>${c.id} · ${c.risk}</strong>
+      caseList.innerHTML = selected.slice(0,3).map(c => {
+        const predicted = updatePredictedLabel(c.score, threshold);
+        return `
+        <div class="case-card" data-id="${c.id}" data-actual="${c.actual}">
+          <div class="case-top">
+            <strong>${c.id} · ${c.risk}</strong>
+            <span class="case-prediction">Predicción actual: <strong>${predicted}</strong></span>
+          </div>
           <span>${c.description}</span>
-          <span><span class="badge ${c.category}">${c.actual}</span> Score: ${c.score}</span>
+          <div class="case-meta"><span>Score: ${c.score}</span><span>Clase real: <span class="case-badge ${c.actual === 'Fraude' ? 'fraude' : 'legit'}">${c.actual}</span></span></div>
+          <div class="case-actions">
+            <button class="case-guess" data-id="${c.id}" data-guess="Fraude">Marcar como fraude</button>
+            <button class="case-guess" data-id="${c.id}" data-guess="Legítima">Marcar como legítima</button>
+          </div>
+          <div class="case-feedback" id="feedback-${c.id}">Selecciona una opción para probar tu clasificación.</div>
         </div>
-      `).join('');
+      `;
+      }).join('');
       const filteredCount = selected.length;
-      caseSummary.textContent = `Mostrando ${filteredCount} ejemplo(s) de ${scenario === 'all' ? 'todos los casos' : scenario.replace('-', ' ')}. Ajusta el umbral para observar cómo cambian los resultados en cada escenario.`;
+      caseSummary.textContent = `Mostrando ${filteredCount} ejemplo(s) de ${scenario === 'all' ? 'todos los casos' : scenario.replace('-', ' ')}. Ajusta el umbral y luego clasifica cada transacción para comparar tu respuesta con la realidad.`;
+      attachCaseListeners();
+    }
+    function attachCaseListeners(){
+      document.querySelectorAll('.case-guess').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = button.dataset.id;
+          const guess = button.dataset.guess;
+          const card = button.closest('.case-card');
+          const actual = card.dataset.actual;
+          const feedback = document.getElementById(`feedback-${id}`);
+          const correct = guess === actual;
+          feedback.textContent = correct ? '✅ Tu clasificación coincide con la clase real.' : '❌ Tu clasificación no coincide con la clase real.';
+          feedback.classList.toggle('correct', correct);
+          feedback.classList.toggle('incorrect', !correct);
+          card.querySelectorAll('.case-guess').forEach(btn => {
+            btn.disabled = true;
+            btn.classList.toggle('selected', btn === button);
+          });
+        });
+      });
     }
     scenarioButtons.forEach(button => {
       button.addEventListener('click', () => {
         activeScenario = button.dataset.scenario;
         scenarioButtons.forEach(btn => btn.classList.toggle('active', btn === button));
         renderCases(activeScenario, parseInt(thInput.value,10));
+        updateInteractivePrediction();
       });
     });
     labButtons.forEach(button => {
@@ -737,6 +805,52 @@
         labButtons.forEach(btn => btn.classList.toggle('active', btn === button));
       });
     });
+    function attachInteractiveListeners(){
+      const newCaseBtn = document.getElementById('newCaseBtn');
+      const interactiveId = document.getElementById('interactiveId');
+      const interactiveDesc = document.getElementById('interactiveDesc');
+      const interactiveScore = document.getElementById('interactiveScore');
+      const interactiveResult = document.getElementById('interactiveResult');
+      const interactivePred = document.getElementById('interactivePred');
+      const interactiveFeedback = document.getElementById('interactiveFeedback');
+      function setInteractiveCase(caseData){
+        currentInteractive = caseData;
+        const threshold = parseInt(thInput.value,10);
+        interactiveId.textContent = `${caseData.id} · ${caseData.risk}`;
+        interactiveDesc.textContent = caseData.description;
+        interactiveScore.textContent = `Score: ${caseData.score}`;
+        interactiveResult.innerHTML = `Resultado real: <span class="case-badge ${caseData.actual === 'Fraude' ? 'fraude' : 'legit'}">${caseData.actual}</span>`;
+        interactivePred.textContent = updatePredictedLabel(caseData.score, threshold);
+        interactiveFeedback.textContent = 'Selecciona una opción para probar tu clasificación.';
+        interactiveFeedback.classList.remove('correct','incorrect');
+        document.querySelectorAll('#interactiveCase .case-guess').forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('selected');
+        });
+      }
+      function pickCase(){
+        const filtered = sampleCases.filter(c => activeScenario === 'all' ? true : c.category === activeScenario);
+        const choice = filtered[Math.floor(Math.random()*filtered.length)];
+        setInteractiveCase(choice);
+      }
+      newCaseBtn.addEventListener('click', pickCase);
+      document.querySelectorAll('#interactiveCase .case-guess').forEach(button => {
+        button.addEventListener('click', () => {
+          if(!currentInteractive) return;
+          const guess = button.dataset.guess;
+          const correct = guess === currentInteractive.actual;
+          interactiveFeedback.textContent = correct ? '✅ Tu clasificación coincide con la clase real.' : '❌ Tu clasificación no coincide con la clase real.';
+          interactiveFeedback.classList.toggle('correct', correct);
+          interactiveFeedback.classList.toggle('incorrect', !correct);
+          document.querySelectorAll('#interactiveCase .case-guess').forEach(btn => {
+            btn.disabled = true;
+            btn.classList.toggle('selected', btn === button);
+          });
+        });
+      });
+      pickCase();
+    }
+    attachInteractiveListeners();
     renderDemo();
 
     const questions = [
