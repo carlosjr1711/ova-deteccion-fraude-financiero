@@ -159,7 +159,8 @@
     .algorithm-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:18px}
     .algorithm-card .tag{font-size:.78rem;}
     .algorithm-card h3{margin:.2rem 0 10px;}
-    .algorithm-card summary{cursor:pointer; list-style:none;}
+    .algorit
+    hm-card summary{cursor:pointer; list-style:none;}
     .algorithm-card summary::-webkit-details-marker{display:none;}
     .algorithm-card .card-body{padding:0 18px 18px; display:flex; flex-direction:column; gap:12px; flex:1}
     .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.45; display:block; max-height:3.2em; overflow:hidden}
@@ -656,6 +657,15 @@
       cards.forEach(details => {
         const content = details.querySelector('.details-content');
         const btn = details.querySelector('.toggle-more');
+        const summary = details.querySelector('summary');
+        // make the title non-interactive: prevent default toggling from the <summary>
+        if(summary){
+          summary.setAttribute('tabindex','-1');
+          summary.style.cursor = 'default';
+          summary.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); });
+          summary.addEventListener('mousedown', e => { e.preventDefault(); });
+          summary.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); } });
+        }
         // initialize max-height according to open state
         if(content){
           if(details.open){
@@ -665,24 +675,25 @@
           }
         }
         updateButton(details);
-        // button toggles open state
+        // button toggles open state (button is the only control now)
         if(btn){
           btn.addEventListener('click', (ev) => {
             ev.preventDefault();
             details.open = !details.open;
-            // allow the toggle event to run and animate
             setTimeout(()=>{
-              if(details.open){
-                content.style.maxHeight = content.scrollHeight + 'px';
-                details.scrollIntoView({behavior:'smooth', block:'center'});
-              } else {
-                content.style.maxHeight = '0px';
+              if(content){
+                if(details.open){
+                  content.style.maxHeight = content.scrollHeight + 'px';
+                  details.scrollIntoView({behavior:'smooth', block:'center'});
+                } else {
+                  content.style.maxHeight = '0px';
+                }
               }
             }, 20);
             updateButton(details);
           });
         }
-        // when native <details> toggles (e.g. clicking summary), animate height and update button
+        // if details is toggled programmatically, keep UI in sync
         details.addEventListener('toggle', ()=>{
           if(content){
             if(details.open){
