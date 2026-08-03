@@ -140,7 +140,7 @@
     .info-card .label{font-family:'JetBrains Mono',monospace; font-size:.82rem; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin-bottom:14px; display:inline-block;}
     .info-card h3{margin:0 0 14px; font-size:1.15rem;}
     .info-card p{margin:0; color:var(--text-soft); line-height:1.8;}
-    .feature-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr));}
+    .feature-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch}
     .feature-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:24px; padding:26px; box-shadow:var(--shadow-soft);}
     .feature-card h4{margin:0 0 12px;}
     .feature-card p{margin:0; color:var(--text-soft); line-height:1.75;}
@@ -155,18 +155,20 @@
     .nav-pill.active{background:var(--accent); color:#08111f; border-color:transparent;}
     .nav-pill:hover{transform:translateY(-1px);}
 
-    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:0; box-shadow:var(--shadow-soft); overflow:hidden}
+    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:0; box-shadow:var(--shadow-soft); overflow:hidden; display:flex; flex-direction:column}
     .algorithm-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:18px}
     .algorithm-card .tag{font-size:.78rem;}
     .algorithm-card h3{margin:.2rem 0 10px;}
     .algorithm-card summary{cursor:pointer; list-style:none;}
     .algorithm-card summary::-webkit-details-marker{display:none;}
-    .algorithm-card .card-body{padding:0 18px 18px; display:flex; flex-direction:column; gap:12px}
+    .algorithm-card .card-body{padding:0 18px 18px; display:flex; flex-direction:column; gap:12px; flex:1}
     .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.45; display:block; max-height:3.2em; overflow:hidden}
     .algorithm-card .details-content{max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.2,.8,.2,1); margin-top:8px; color:var(--text-soft); line-height:1.8}
     .algorithm-card[open] .details-content{ /* fallback if JS not available */ max-height:1200px }
     .algorithm-card .pros-cons{display:grid; gap:16px; grid-template-columns:1fr 1fr; margin-top:18px;}
-    .algorithm-card:not([open]){min-height:200px}
+    /* ensure collapsed cards have equal height but can grow when expanded */
+    .algorithm-card:not([open]){min-height:190px}
+    .algorithm-card:not([open]) .card-body{min-height:120px}
     .toggle-more{align-self:flex-start; background:var(--accent); color:#071024; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700}
     .toggle-more:hover{filter:brightness(.95)}
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
