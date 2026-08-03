@@ -167,8 +167,12 @@
     .algorithm-card[open] .details-content{ /* fallback if JS not available */ max-height:1200px }
     .algorithm-card .pros-cons{display:grid; gap:16px; grid-template-columns:1fr 1fr; margin-top:18px;}
     /* ensure collapsed cards have equal height but can grow when expanded */
-    .algorithm-card:not([open]){min-height:190px}
-    .algorithm-card:not([open]) .card-body{min-height:120px}
+    .algorithm-card:not([open]){min-height:220px}
+    .algorithm-card:not([open]) .card-body{min-height:140px}
+    @media(max-width:840px){
+      .algorithm-card:not([open]){min-height:160px}
+      .algorithm-card:not([open]) .card-body{min-height:110px}
+    }
     .toggle-more{align-self:flex-start; background:var(--accent); color:#071024; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700}
     .toggle-more:hover{filter:brightness(.95)}
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
