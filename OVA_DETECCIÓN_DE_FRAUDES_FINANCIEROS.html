@@ -210,7 +210,7 @@
 <body>
   <div class="topbar">
     <div class="wrap">
-      <div class="brand"><span class="dot"></span><div><strong>OVA</strong><span> - Detección de fraude financiero</span></div></div>
+      <div class="brand"><span class="dot"></span><div><strong>OVA</strong><span> · Detección de Fraudes Financieros</span></div></div>
       <div class="actions">
         <button class="btn secondary" id="menuToggle">Menú</button>
       </div>
@@ -322,21 +322,32 @@
             <div class="small-card"><span>Limitación</span><strong>Captura solo relaciones lineales</strong></div>
           </div></div>
         </details>
-        <details class="algorithm-card">
-          <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
-          <div class="details-content"><p>Construye una colección de árboles de decisión entrenados sobre diferentes subconjuntos del dataset, y combina sus predicciones para mejorar la estabilidad.</p><p>Funciona generando múltiples arboles a partir de muestras aleatorias de características y registros, luego promedia o vota sus resultados para reducir el sobreajuste.</p><p>Se utiliza cuando los datos tienen relaciones no lineales, interacciones entre variables y se necesita un modelo robusto ante ruido y variaciones.</p>
-          <div class="pros-cons">
-            <div class="small-card"><span>Ventaja</span><strong>Alta precisión y robustez</strong></div>
-            <div class="small-card"><span>Limitación</span><strong>Menos interpretable que un solo árbol</strong></div>
-          </div></div>
-        </details>
-        <details class="algorithm-card">
-          <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
-          <div class="details-content"><p>Localiza observaciones atípicas al aislarlas en árboles de decisión construidos con particiones aleatorias.</p><p>Funciona creando múltiples particiones en el espacio de características; las observaciones anómalas se aíslan con menos particiones que los datos normales.</p><p>Se utiliza cuando no hay suficientes etiquetas de fraude disponibles y se quiere detectar patrones nuevos o desconocidos de comportamiento irregular.</p>
-          <div class="pros-cons">
-            <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías no etiquetadas</strong></div>
-            <div class="small-card"><span>Limitación</span><strong>Puede generar falsos positivos</strong></div>
-          </div></div>
+          <details class="algorithm-card">
+            <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
+            <div class="details-content">
+              <p>Random Forest es un ensamblado de árboles de decisión que combina múltiples modelos para mejorar la precisión y reducir el sobreajuste.</p>
+              <p>Cómo funciona: se generan muchos árboles sobre muestras aleatorias del conjunto de entrenamiento (bootstrap) y subconjuntos de características; la predicción final proviene de la votación o el promedio de los árboles individuales.</p>
+              <p>Cuándo se utiliza: cuando los datos presentan relaciones no lineales, interacciones entre variables y se requiere un modelo robusto frente al ruido.</p>
+              <div class="pros-cons">
+                <div class="small-card"><span>Ventaja</span><strong>Alta precisión y robustez frente al ruido</strong></div>
+                <div class="small-card"><span>Limitación</span><strong>Menor interpretabilidad y mayor coste computacional</strong></div>
+              </div>
+              <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Combinar variables de monto, frecuencia, ubicación y comportamiento del usuario para estimar probabilidad de fraude en transacciones online.</strong></div>
+            </div>
+          </details>
+            <details class="algorithm-card">
+              <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
+              <div class="details-content">
+                <p>Isolation Forest es un método de detección de anomalías no supervisado que aísla observaciones atípicas construyendo árboles de partición aleatoria.</p>
+                <p>Cómo funciona: genera múltiples árboles de aislamiento; las observaciones que requieren menos particiones para aislarse obtienen puntuaciones de anomalía más altas.</p>
+                <p>Cuándo se utiliza: útil cuando no se dispone de etiquetas de fraude y se desea detectar patrones nuevos o emergentes en grandes volúmenes de datos.</p>
+                <div class="pros-cons">
+                  <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías sin etiquetas y escala bien</strong></div>
+                  <div class="small-card"><span>Limitación</span><strong>Puede producir falsos positivos y requiere ajuste de parámetros</strong></div>
+                </div>
+                <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Identificar transacciones inusuales por patrón de origen/destino o por comportamiento horario fuera de lo habitual.</strong></div>
+              </div>
+            </details>
         </details>
       </div>
     </section>
@@ -406,7 +417,12 @@
     </section>
   </main>
 
-  <footer class="footer"><strong>OVA · Detección de Fraudes Financieros</strong> — Interfaz renovada para una experiencia educativa moderna y profesional.</footer>
+  <footer class="footer">
+    <div><strong>OVA · Detección de Fraudes Financieros</strong></div>
+    <div>Universidad de la Costa (CUC)</div>
+    <div>Ingeniería de Sistemas</div>
+    <div style="margin-top:8px"><strong>Carlos Junior Berdugo Roca</strong> · 2026</div>
+  </footer>
 
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
