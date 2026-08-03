@@ -221,77 +221,38 @@
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
     .small-card span{display:block; font-size:.82rem; color:var(--text-soft); margin-bottom:8px;}
     .small-card strong{display:block; font-size:1rem;}
-    .lab-layout{display:grid; gap:24px; grid-template-columns:1fr;}
-    .lab-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:30px; padding:28px; box-shadow:var(--shadow-soft);}
-    .lab-card .card-header{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:22px;}
-    .lab-card .card-header h3{margin:0; font-size:1.35rem;}
-    .lab-card .card-header .eyebrow{margin:0; color:var(--accent); font-size:.82rem; letter-spacing:.18em; text-transform:uppercase;}
-    .lab-card .badge.primary{background:var(--accent); color:#08111f; padding:10px 16px; border-radius:999px; font-weight:700;}
-    .case-summary-text{margin-bottom:18px; color:var(--text-soft); line-height:1.8;}
-    @media(min-width:1000px){.lab-layout{grid-template-columns:repeat(2,minmax(0,1fr));}.lab-cases{grid-column:span 2;}.lab-simulation{grid-column:span 2;}}    .slider-panel{display:grid; gap:18px;}
-    .slider-meta{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;}
-    .slider-meta .label{font-size:.85rem; color:var(--text-soft); text-transform:uppercase; letter-spacing:.1em;}
-    .slider-meta strong{font-size:2rem; display:block; margin-top:8px;}
-    .slider-hint{color:var(--text-soft); font-size:.95rem;}
-    .slider-wrapper{position:relative; padding-top:20px;}
-    .slider-value{position:absolute; top:0; right:0; background:var(--accent); color:#08111f; padding:8px 14px; border-radius:999px; font-weight:700; box-shadow:var(--shadow-soft);}
-    input[type=range]{width:100%; height:18px; -webkit-appearance:none; background:linear-gradient(90deg, rgba(99,102,241,.3) 0%, rgba(99,102,241,.15) 100%); border-radius:999px; outline:none;}
-    input[type=range]::-webkit-slider-thumb{appearance:none; width:28px; height:28px; border-radius:50%; background:var(--accent); border:4px solid #0f172a; cursor:pointer; transition:transform .2s ease;}
-    input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.08);}
-    input[type=range]::-moz-range-thumb{width:28px; height:28px; border-radius:50%; background:var(--accent); border:4px solid #0f172a; cursor:pointer;}
-    .range-labels{display:flex; justify-content:space-between; font-size:.9rem; color:var(--text-soft); margin-top:6px;}
-    .chip-section{margin-top:20px;}
-    .chip-group-title{font-size:.95rem; color:var(--text-soft); margin-bottom:12px;}
-    .chip-row{display:flex; flex-wrap:wrap; gap:10px;}
-    .scenario-chip, .filter-chip{background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--text); border-radius:999px; padding:12px 18px; cursor:pointer; transition:all .2s ease; font-weight:600;}
-    .scenario-chip:hover, .filter-chip:hover{transform:translateY(-1px); background:rgba(255,255,255,.1);}
-    .scenario-chip.active, .filter-chip.active{background:var(--accent); color:#08111f; border-color:transparent;}
-    .metric-grid-big{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:18px;}
-    .metric-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px;}
-    .metric-card{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:24px; padding:22px; min-height:112px; display:grid; gap:10px;}
-    .metric-card span{font-size:.85rem; color:var(--text-soft);}
-    .metric-card strong{font-size:1.75rem; display:block;}
-    .metric-card.metric-large{grid-column:span 2;}
-    .metric-caption{color:var(--text-soft); font-size:.9rem;}
-    .case-list{display:grid; gap:18px;}
-    .case-card{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:24px; padding:22px; display:grid; gap:16px;}
-    .case-card-header{display:flex; justify-content:space-between; gap:16px; align-items:flex-start;}
-    .case-card-header strong{font-size:1.05rem;}
-    .case-card-header .case-tag{padding:6px 12px; border-radius:999px; font-size:.82rem; font-weight:700;}
-    .case-tag.predicted{background:rgba(59,130,246,.12); color:#1d4ed8;}
-    .case-tag.actual.fraude{background:rgba(245,101,101,.12); color:var(--danger);}
-    .case-tag.actual.legit{background:rgba(34,197,94,.12); color:var(--success);}
-    .case-summary-row{display:grid; gap:14px; grid-template-columns:repeat(2,minmax(0,1fr));}
-    .case-property{background:rgba(255,255,255,.06); padding:14px; border-radius:18px;}
-    .case-property span{display:block; color:var(--text-soft); font-size:.82rem; margin-bottom:6px;}
-    .case-property strong{display:block;}
-    .case-meta{display:grid; gap:12px; font-size:.92rem;}
-    .progress-bar{background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden; height:12px; margin-top:8px;}
-    .progress-fill{height:100%; background:linear-gradient(90deg, rgba(99,102,241,.9), rgba(99,102,241,.5)); transition:width .3s ease;}
-    .case-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:12px;}
-    .case-guess{flex:1 1 160px; border:none; border-radius:999px; padding:14px 18px; cursor:pointer; font-weight:700; color:#fff; transition:transform .2s ease, filter .2s ease;}
-    .case-guess:hover{transform:translateY(-1px); filter:brightness(1.05);}
-    .case-guess.fraud{background:#ef4444;}
-    .case-guess.legit{background:#22c55e;}
-    .case-feedback{padding:16px 18px; border-radius:20px; background:rgba(255,255,255,.04); color:var(--text-soft); border:1px solid transparent; min-height:55px;}
-    .case-feedback.correct{background:rgba(34,197,94,.12); border-color:rgba(34,197,94,.2); color:var(--success);}
-    .case-feedback.incorrect{background:rgba(248,113,113,.12); border-color:rgba(248,113,113,.2); color:var(--danger);}
-    .case-result{margin-top:12px; color:var(--text-soft); font-weight:700;}
-    .interactive-top{display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; align-items:center;}
-    .interactive-top p{margin:0; color:var(--text-soft);}
-    .interactive-case{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:24px; padding:22px;}
-    .interactive-info{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-start;}
-    .interactive-info .case-label{display:block; color:var(--text-soft); text-transform:uppercase; letter-spacing:.12em; font-size:.78rem; margin-bottom:8px;}
-    .interactive-info strong{display:block; font-size:1.1rem;}
-    .case-status{color:var(--text-soft);}
-    .case-summary-row{display:grid; gap:14px; grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:18px;}
-    .interactive-desc{margin:18px 0 0; color:var(--text-soft); line-height:1.75;}
-    .case-result{margin-top:18px; color:var(--text-soft);}
-    .case-result strong{color:var(--text);}
-    .lab-button.primary{background:var(--accent); color:#08111f; border-color:transparent;}
-    .lab-button.primary:hover{background:rgba(99,102,241,.9);}
-    @media(max-width:960px){.metric-grid-big{grid-template-columns:1fr;} .metric-grid{grid-template-columns:repeat(2,minmax(0,1fr));} .case-summary-row{grid-template-columns:1fr;} }
-    @media(max-width:720px){.metric-grid{grid-template-columns:1fr;} .interactive-top{flex-direction:column;}.lab-card{padding:22px;}}
+    .demo-panel{display:grid; gap:18px;}
+    .demo-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:28px; box-shadow:var(--shadow-soft);}
+    .demo-top{display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;}
+    .demo-top h3{margin:0; font-size:1.1rem;}
+    .demo-top strong{color:var(--accent);}
+    .lab-insight{margin-top:16px; color:var(--text-soft); line-height:1.75; border-left:3px solid var(--accent); padding-left:14px;}
+    .lab-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px;}
+    .lab-button{background:transparent; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:11px 18px; cursor:pointer; font-weight:600; transition:transform .2s ease, background .2s ease, color .2s ease;}
+    .lab-button:hover{background:rgba(99,102,241,.16); transform:translateY(-1px);}
+    .lab-button.active{background:var(--accent); color:#08111f;}
+    .lab-scenarios{display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:18px;}
+    .scenario-label{font-weight:700; color:var(--text-soft);}
+    .scenario-button{background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--text); border-radius:999px; padding:10px 16px; cursor:pointer; transition:all .2s ease;}
+    .scenario-button:hover{transform:translateY(-1px);}
+    .scenario-button.active{background:var(--accent); color:#08111f; border-color:transparent;}
+    .cases-panel{margin-top:24px; display:grid; gap:16px;}
+    .case-list{display:grid; gap:12px;}
+    .case-card{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:18px; padding:16px; display:grid; gap:10px;}
+    .case-card strong{display:block; font-size:1rem;}
+    .case-card span{display:block; color:var(--text-soft); font-size:.92rem;}
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:.78rem; font-weight:700;}
+    .badge.high{background:rgba(245,158,11,.12); color:#b45309;}
+    .badge.low{background:rgba(34,197,94,.12); color:var(--success);}
+    .badge.mixed{background:rgba(59,130,246,.12); color:#1d4ed8;}
+    .metric-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:24px;}
+    .metric-card{background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:20px; padding:18px; text-align:center;}
+    .metric-card span{display:block; font-size:.78rem; color:var(--text-soft); margin-bottom:10px;}
+    .metric-card strong{font-size:1.55rem; display:block;}
+    .range-wrap{padding:14px 0;}
+    input[type=range]{width:100%; accent-color:var(--accent);}
+    .range-labels{display:flex; justify-content:space-between; font-size:.85rem; color:var(--text-soft); margin-top:10px;}
+    .demo-note{margin-top:18px; color:var(--text-soft); line-height:1.75; border-left:3px solid var(--accent); padding-left:14px;}
     .quiz-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:24px; box-shadow:var(--shadow-soft); margin-bottom:22px; transition:transform .24s ease, border-color .24s ease, background .2s ease;}
     .quiz-card:hover{transform:translateY(-3px);}
     .quiz-card .label{display:inline-flex; font-family:'JetBrains Mono',monospace; font-size:.82rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;}
@@ -500,115 +461,69 @@
       <div class="section-heading">
         <div>
           <div class="eyebrow">04 · Laboratorio</div>
-          <h2>Laboratorio interactivo de detección de fraude</h2>
-          <p>Experimenta con diferentes escenarios, ajusta parámetros, analiza transacciones y comprende cómo los modelos toman decisiones en la detección de fraude financiero.</p>
+          <h2>Experimenta con el umbral de decisión</h2>
+          <p>Un umbral bajo detecta más fraude, pero puede generar más alertas falsas; un umbral alto reduce falsas alarmas, pero deja pasar más casos.</p>
         </div>
       </div>
-      <div class="lab-layout">
-        <div class="lab-card lab-config" data-reveal>
-          <div class="card-header">
-            <div>
-              <span class="eyebrow">Configuración</span>
-              <h3>Ajusta el umbral y define tu escenario</h3>
-            </div>
-            <span class="badge primary">Interacción activa</span>
+      <div class="demo-panel">
+        <div class="demo-card" data-reveal>
+          <div class="demo-top"><h3>Umbral de riesgo</h3><strong id="thVal">Umbral: 50</strong></div>
+          <div class="range-wrap"><input type="range" id="threshold" min="0" max="100" value="50"></div>
+          <div class="range-labels"><span>Más detección</span><span>Más precisión</span></div>
+          <div class="lab-actions">
+            <button class="lab-button" data-threshold="30">Escenario sensible</button>
+            <button class="lab-button" data-threshold="70">Escenario estricto</button>
           </div>
-          <div class="slider-panel">
-            <div class="slider-meta">
+          <div class="lab-scenarios">
+            <span class="scenario-label">Ejemplos dinámicos:</span>
+            <button class="scenario-button active" data-scenario="all">Todos</button>
+            <button class="scenario-button" data-scenario="high-risk">Alto riesgo</button>
+            <button class="scenario-button" data-scenario="low-risk">Bajo riesgo</button>
+            <button class="scenario-button" data-scenario="mixed">Casos mixtos</button>
+          </div>
+          <div class="cases-panel" id="casePanel">
+            <div class="case-card case-summary"><strong>Prueba transacciones</strong><p id="caseSummary">Selecciona un escenario y clasifica cada caso para ver si tu intuición coincide con el resultado real del modelo y del umbral.</p></div>
+            <div class="case-list" id="caseList"></div>
+          </div>
+          <div class="lab-interactive" id="labInteractive">
+            <div class="interactive-top">
               <div>
-                <span class="label">Umbral de decisión</span>
-                <strong id="thVal">50</strong>
+                <h4>Simula un caso nuevo</h4>
+                <p>Genera una transacción aleatoria y decide si es fraude o legítima según el umbral.</p>
               </div>
-              <span class="slider-hint">Score mínimo para clasificar una transacción como fraude.</span>
+              <button class="lab-button" id="newCaseBtn">Generar caso</button>
             </div>
-            <div class="slider-wrapper">
-              <div class="slider-value" id="thresholdValue">50</div>
-              <input type="range" id="threshold" min="0" max="100" value="50">
-            </div>
-            <div class="range-labels"><span>Mayor detección</span><span>Mayor precisión</span></div>
-          </div>
-          <div class="chip-section">
-            <div class="chip-group-title">Escenarios rápidos</div>
-            <div class="chip-row">
-              <button class="scenario-chip active" data-scenario="all">🟣 Todos</button>
-              <button class="scenario-chip" data-scenario="high-risk">🔴 Alto riesgo</button>
-              <button class="scenario-chip" data-scenario="low-risk">🟠 Bajo riesgo</button>
-              <button class="scenario-chip" data-scenario="mixed">🔵 Casos mixtos</button>
-            </div>
-          </div>
-          <div class="chip-section">
-            <div class="chip-group-title">Filtros</div>
-            <div class="chip-row">
-              <button class="filter-chip active" data-filter="all">Todas</button>
-              <button class="filter-chip" data-filter="fraude">Fraude reales</button>
-              <button class="filter-chip" data-filter="legit">Legítimas</button>
-            </div>
-          </div>
-          <p class="demo-note" id="demoNote">Ajusta el umbral para ver el impacto en métricas clave y en los casos de ejemplo.</p>
-        </div>
-
-        <div class="lab-card lab-metrics" data-reveal>
-          <div class="card-header">
-            <div>
-              <span class="eyebrow">Resultados del modelo</span>
-              <h3>Métricas en tiempo real</h3>
-            </div>
-          </div>
-          <div class="metric-grid metric-grid-big">
-            <div class="metric-card metric-large"><span><strong>Precisión</strong></span><strong id="precVal">–</strong><span class="metric-caption">Porcentaje de alertas correctas</span></div>
-            <div class="metric-card metric-large"><span><strong>Recall</strong></span><strong id="recVal">–</strong><span class="metric-caption">Cobertura de fraude detectado</span></div>
-            <div class="metric-card metric-large"><span><strong>F1-score</strong></span><strong id="f1Val">–</strong><span class="metric-caption">Balance entre precisión y recall</span></div>
-            <div class="metric-card metric-large"><span><strong>Exactitud</strong></span><strong id="accVal">–</strong><span class="metric-caption">Proporción de clasificaciones correctas</span></div>
-            <div class="metric-card"><span><strong>Verdaderos positivos</strong></span><strong id="tpN">0</strong></div>
-            <div class="metric-card"><span><strong>Falsos positivos</strong></span><strong id="fpN">0</strong></div>
-            <div class="metric-card"><span><strong>Falsos negativos</strong></span><strong id="fnN">0</strong></div>
-            <div class="metric-card"><span><strong>Verdaderos negativos</strong></span><strong id="tnN">0</strong></div>
-          </div>
-        </div>
-
-        <div class="lab-card lab-cases" data-reveal>
-          <div class="card-header">
-            <div>
-              <span class="eyebrow">Casos de prueba</span>
-              <h3>Analiza transacciones en contexto</h3>
-            </div>
-          </div>
-          <p class="case-summary-text" id="caseSummary">Ajusta los filtros para explorar distintos grupos de transacciones.</p>
-          <div class="case-list" id="caseList"></div>
-        </div>
-
-        <div class="lab-card lab-simulation" data-reveal>
-          <div class="card-header">
-            <div>
-              <span class="eyebrow">Simulación</span>
-              <h3>Genera y clasifica transacciones</h3>
-            </div>
-          </div>
-          <div class="interactive-top">
-            <div>
-              <p>Prueba un caso aleatorio con el umbral actual. Clasifica cada transacción y recibe retroalimentación inmediata.</p>
-            </div>
-            <button class="lab-button primary" id="newCaseBtn">Generar caso</button>
-          </div>
-          <div class="interactive-case" id="interactiveCase">
-            <div class="interactive-info">
-              <div>
-                <span class="case-label">Caso activo</span>
-                <strong id="interactiveId">TX-001 · Caso aleatorio</strong>
+            <div class="interactive-case" id="interactiveCase">
+              <div class="case-card">
+                <div class="case-top">
+                  <strong id="interactiveId">TX-001 · Caso aleatorio</strong>
+                  <span class="case-prediction">Umbral actual: <strong id="interactivePred">–</strong></span>
+                </div>
+                <span id="interactiveDesc">Selecciona “Generar caso” para iniciar la prueba.</span>
+                <div class="case-meta"><span id="interactiveScore">Score: –</span><span id="interactiveResult">Resultado real: –</span></div>
+                <div class="case-actions">
+                  <button class="case-guess" data-guess="Fraude">Marcar como fraude</button>
+                  <button class="case-guess" data-guess="Legítima">Marcar como legítima</button>
+                </div>
+                <div class="case-feedback" id="interactiveFeedback">Pulsa un botón para comparar tu decisión con el resultado real.</div>
               </div>
-              <div class="case-status"><span>Umbral actual:</span> <strong id="interactivePred">–</strong></div>
             </div>
-            <div class="case-summary-row">
-              <div class="case-property"><span>Comercio</span><strong id="interactiveMerchant">–</strong></div>
-              <div class="case-property"><span>Monto</span><strong id="interactiveAmount">–</strong></div>
-            </div>
-            <p id="interactiveDesc" class="interactive-desc">Selecciona “Generar caso” para iniciar la prueba.</p>
-            <div class="case-actions">
-              <button class="case-guess fraud" data-guess="Fraude">🛑 Es fraude</button>
-              <button class="case-guess legit" data-guess="Legítima">✅ Es legítima</button>
-            </div>
-            <div class="case-feedback" id="interactiveFeedback">Pulsa un botón para comparar tu decisión con el resultado real.</div>
-            <div class="case-result" id="interactiveResult">Resultado real: <strong id="interactiveActual">–</strong></div>
+          </div>
+          <p class="demo-note" id="demoNote">Simulación sobre 40 transacciones de referencia (8 fraudulentas, 32 legítimas). Ajusta el umbral para ver cómo cambia el balance entre detecciones y alertas falsas.</p>
+          <div class="lab-insight" id="labInsight">Encuentra el umbral que mejor equilibra la detección de fraude con la experiencia del cliente.</div>
+        </div>
+        <div class="demo-card" data-reveal>
+          <div class="metric-grid">
+            <div class="metric-card"><span>Verdaderos positivos</span><strong id="tpN">0</strong></div>
+            <div class="metric-card"><span>Falsos positivos</span><strong id="fpN">0</strong></div>
+            <div class="metric-card"><span>Falsos negativos</span><strong id="fnN">0</strong></div>
+            <div class="metric-card"><span>Verdaderos negativos</span><strong id="tnN">0</strong></div>
+          </div>
+          <div class="metric-grid" style="margin-top:18px;">
+            <div class="metric-card"><span>Precisión</span><strong id="precVal">–</strong></div>
+            <div class="metric-card"><span>Recall</span><strong id="recVal">–</strong></div>
+            <div class="metric-card"><span>F1-score</span><strong id="f1Val">–</strong></div>
+            <div class="metric-card"><span>Exactitud</span><strong id="accVal">–</strong></div>
           </div>
         </div>
       </div>
@@ -783,37 +698,9 @@
       const acc = (tp+tn)/dataset.length;
       return {tp,fp,fn,tn,precision,recall,f1,acc};
     }
-    thInput.addEventListener('input', renderDemo);
-    const scenarioButtons = document.querySelectorAll('.scenario-chip');
-    const filterButtons = document.querySelectorAll('.filter-chip');
-    const caseSummary = document.getElementById('caseSummary');
-    const caseList = document.getElementById('caseList');
-    const thresholdValue = document.getElementById('thresholdValue');
-    let activeScenario = 'all';
-    let activeFilter = 'all';
-    const sampleCases = [
-      {id:'TX-101', merchant:'CryptoPay', amount:'$2,450', risk:'Alto riesgo', score:92, actual:'Fraude', description:'Pago internacional fuera del patrón habitual.', category:'high-risk'},
-      {id:'TX-114', merchant:'MercadoLocal', amount:'$45', risk:'Bajo riesgo', score:18, actual:'Legítima', description:'Compra local de bajo monto con historial limpio.', category:'low-risk'},
-      {id:'TX-128', merchant:'GlobalShop', amount:'$980', risk:'Alto riesgo', score:78, actual:'Fraude', description:'Transferencia nocturna a nuevo receptor.', category:'high-risk'},
-      {id:'TX-203', merchant:'FarmaExpress', amount:'$430', risk:'Mixto', score:55, actual:'Legítima', description:'Compra grande con cliente recurrente.', category:'mixed'},
-      {id:'TX-217', merchant:'TechMarket', amount:'$625', risk:'Mixto', score:49, actual:'Fraude', description:'Transacción atípica desde dispositivo nuevo.', category:'mixed'},
-      {id:'TX-232', merchant:'Café Urbano', amount:'$28', risk:'Bajo riesgo', score:24, actual:'Legítima', description:'Pequeña compra en comercios habituales.', category:'low-risk'}
-    ];
-    let currentInteractive = null;
-    function updatePredictedLabel(score, threshold){
-      return score >= threshold ? 'Fraude' : 'Legítima';
-    }
-    function updateInteractivePrediction(){
-      if(!currentInteractive) return;
-      const threshold = parseInt(thInput.value,10);
-      const predicted = updatePredictedLabel(currentInteractive.score, threshold);
-      const interactivePred = document.getElementById('interactivePred');
-      if(interactivePred) interactivePred.textContent = predicted;
-    }
     function renderDemo(){
       const threshold = parseInt(thInput.value,10);
       thVal.textContent = `Umbral: ${threshold}`;
-      thresholdValue.textContent = threshold;
       const metrics = computeMetrics(threshold);
       els.tp.textContent = metrics.tp;
       els.fp.textContent = metrics.fp;
@@ -834,42 +721,46 @@
       renderCases(activeScenario, threshold);
       updateInteractivePrediction();
     }
+    thInput.addEventListener('input', renderDemo);
+    const labButtons = document.querySelectorAll('.lab-button');
+    const scenarioButtons = document.querySelectorAll('.scenario-button');
+    const caseSummary = document.getElementById('caseSummary');
+    const caseList = document.getElementById('caseList');
+    let activeScenario = 'all';
+    const sampleCases = [
+      {id:'TX-101', risk:'Alto riesgo', score:92, actual:'Fraude', description:'Pago internacional fuera del patrón habitual.', category:'high-risk'},
+      {id:'TX-114', risk:'Bajo riesgo', score:18, actual:'Legítima', description:'Compra local de bajo monto con historial limpio.', category:'low-risk'},
+      {id:'TX-128', risk:'Alto riesgo', score:78, actual:'Fraude', description:'Transferencia nocturna a nuevo receptor.', category:'high-risk'},
+      {id:'TX-203', risk:'Mixto', score:55, actual:'Legítima', description:'Compra grande con cliente recurrente.', category:'mixed'},
+      {id:'TX-217', risk:'Mixto', score:49, actual:'Fraude', description:'Transacción atípica desde dispositivo nuevo.', category:'mixed'},
+      {id:'TX-232', risk:'Bajo riesgo', score:24, actual:'Legítima', description:'Pequeña compra en comercios habituales.', category:'low-risk'}
+    ];
+    let currentInteractive = null;
+    function updatePredictedLabel(score, threshold){
+      return score >= threshold ? 'Fraude' : 'Legítima';
+    }
+    function updateInteractivePrediction(){
+      if(!currentInteractive) return;
+      const threshold = parseInt(thInput.value,10);
+      const predicted = updatePredictedLabel(currentInteractive.score, threshold);
+      const interactivePred = document.getElementById('interactivePred');
+      if(interactivePred) interactivePred.textContent = predicted;
+    }
     function renderCases(scenario, threshold){
-      const selected = sampleCases
-        .filter(c => scenario === 'all' ? true : c.category === scenario)
-        .filter(c => {
-          if(activeFilter === 'all') return true;
-          if(activeFilter === 'fraude') return c.actual === 'Fraude';
-          return c.actual === 'Legítima';
-        });
-      if(selected.length === 0){
-        caseList.innerHTML = '<div class="case-card"><p>No hay casos que coincidan con este filtro. Ajusta el escenario o el umbral para ver nuevas transacciones.</p></div>';
-      } else {
-        caseList.innerHTML = selected.slice(0,3).map(c => {
-          const predicted = updatePredictedLabel(c.score, threshold);
+      const selected = sampleCases.filter(c => scenario === 'all' ? true : c.category === scenario);
+      caseList.innerHTML = selected.slice(0,3).map(c => {
+        const predicted = updatePredictedLabel(c.score, threshold);
         return `
         <div class="case-card" data-id="${c.id}" data-actual="${c.actual}">
-          <div class="case-card-header">
-            <div>
-              <strong>${c.id}</strong>
-              <span class="case-tag predicted">${predicted}</span>
-            </div>
-            <span class="case-tag actual ${c.actual === 'Fraude' ? 'fraude' : 'legit'}">${c.actual}</span>
+          <div class="case-top">
+            <strong>${c.id} · ${c.risk}</strong>
+            <span class="case-prediction">Predicción actual: <strong>${predicted}</strong></span>
           </div>
-          <div class="case-summary-row">
-            <div class="case-property"><span>Comercio</span><strong>${c.merchant}</strong></div>
-            <div class="case-property"><span>Monto</span><strong>${c.amount}</strong></div>
-          </div>
-          <p>${c.description}</p>
-          <div class="case-meta">
-            <div>
-              <span>Score de riesgo</span>
-              <div class="progress-bar"><span class="progress-fill" style="width:${c.score}%"></span></div>
-            </div>
-          </div>
+          <span>${c.description}</span>
+          <div class="case-meta"><span>Score: ${c.score}</span><span>Clase real: <span class="case-badge ${c.actual === 'Fraude' ? 'fraude' : 'legit'}">${c.actual}</span></span></div>
           <div class="case-actions">
-            <button class="case-guess fraud" data-id="${c.id}" data-guess="Fraude">🛑 Es fraude</button>
-            <button class="case-guess legit" data-id="${c.id}" data-guess="Legítima">✅ Es legítima</button>
+            <button class="case-guess" data-id="${c.id}" data-guess="Fraude">Marcar como fraude</button>
+            <button class="case-guess" data-id="${c.id}" data-guess="Legítima">Marcar como legítima</button>
           </div>
           <div class="case-feedback" id="feedback-${c.id}">Selecciona una opción para probar tu clasificación.</div>
         </div>
@@ -906,11 +797,12 @@
         updateInteractivePrediction();
       });
     });
-    filterButtons.forEach(button => {
+    labButtons.forEach(button => {
       button.addEventListener('click', () => {
-        activeFilter = button.dataset.filter;
-        filterButtons.forEach(btn => btn.classList.toggle('active', btn === button));
-        renderCases(activeScenario, parseInt(thInput.value,10));
+        const value = Number(button.dataset.threshold);
+        thInput.value = value;
+        renderDemo();
+        labButtons.forEach(btn => btn.classList.toggle('active', btn === button));
       });
     });
     function attachInteractiveListeners(){
@@ -921,16 +813,12 @@
       const interactiveResult = document.getElementById('interactiveResult');
       const interactivePred = document.getElementById('interactivePred');
       const interactiveFeedback = document.getElementById('interactiveFeedback');
-      const interactiveMerchant = document.getElementById('interactiveMerchant');
-      const interactiveAmount = document.getElementById('interactiveAmount');
       function setInteractiveCase(caseData){
         currentInteractive = caseData;
         const threshold = parseInt(thInput.value,10);
         interactiveId.textContent = `${caseData.id} · ${caseData.risk}`;
         interactiveDesc.textContent = caseData.description;
         interactiveScore.textContent = `Score: ${caseData.score}`;
-        interactiveMerchant.textContent = caseData.merchant;
-        interactiveAmount.textContent = caseData.amount;
         interactiveResult.innerHTML = `Resultado real: <span class="case-badge ${caseData.actual === 'Fraude' ? 'fraude' : 'legit'}">${caseData.actual}</span>`;
         interactivePred.textContent = updatePredictedLabel(caseData.score, threshold);
         interactiveFeedback.textContent = 'Selecciona una opción para probar tu clasificación.';
