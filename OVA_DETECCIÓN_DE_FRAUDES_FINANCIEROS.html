@@ -110,11 +110,11 @@
     .floating-theme svg{width:20px; height:20px; display:block;}
     .actions{display:flex; align-items:center; gap:12px;}
     .btn{display:inline-flex; align-items:center; gap:10px; border:none; border-radius:999px; padding:14px 20px; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease, background .2s ease;}
-    .btn.primary{background:linear-gradient(135deg, var(--accent), #ffb703); color:#08111f; font-weight:700;}
+    .btn.primary{background:var(--accent); color:#ffffff; font-weight:700;}
     .btn.secondary{background:rgba(255,255,255,.08); color:var(--text);}
     .btn:hover{transform:translateY(-1px); box-shadow:var(--shadow-soft);}
-    .hero-section{padding:48px 24px 30px;}
-    .hero-grid{display:grid; grid-template-columns:1fr 420px; gap:32px; align-items:center; max-width:1180px; margin:0 auto;}
+    .hero-section{padding:30px 24px 30px;}
+    .hero-grid{display:grid; grid-template-columns:1fr 420px; gap:32px; align-items:flex-start; max-width:1180px; margin:0 auto;}
     .hero-copy{max-width:610px;}
     .hero-eyebrow{display:inline-flex; align-items:center; gap:10px; text-transform:uppercase; letter-spacing:.16em; font-size:11px; color:var(--accent); margin-bottom:18px;}
     .hero-eyebrow::before{content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(255,183,3,.16);}
@@ -276,9 +276,7 @@
   <div class="topbar">
     <div class="wrap">
       <div class="brand"><span class="dot"></span><div><strong>OVA</strong><span> · Detección de Fraudes Financieros</span></div></div>
-      <div class="actions">
-        <button class="btn secondary" id="menuToggle">Menú</button>
-      </div>
+      <div class="actions"></div>
       <button class="floating-theme" id="themeToggle" aria-label="Cambiar tema">☀️</button>
       <div class="nav-links" id="navLinks">
         <button data-view-target="view-overview" class="active">Inicio</button>
@@ -535,7 +533,6 @@
     const views = document.querySelectorAll('.view, .hero-section');
     const navButtons = document.querySelectorAll('[data-view-target]');
     const navLinks = document.getElementById('navLinks');
-    const menuToggle = document.getElementById('menuToggle');
     const themeToggle = document.getElementById('themeToggle');
     const modalOverlay = document.getElementById('modalOverlay');
     const modalClose = document.getElementById('modalClose');
@@ -554,7 +551,6 @@
       document.querySelectorAll('.nav-pill').forEach(p => p.classList.toggle('active', p === pill));
       setActiveView(pill.dataset.viewTarget);
     }));
-    menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 
     const hash = window.location.hash.replace('#','');
     const initialView = hash && document.getElementById(hash) ? hash : 'view-overview';
