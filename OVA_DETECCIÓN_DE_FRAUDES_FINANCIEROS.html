@@ -102,13 +102,21 @@
     .hero-eyebrow::before{content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(255,183,3,.16);}
     .hero-copy h1{font-family:'Space Grotesk',sans-serif; font-size:clamp(38px,5vw,64px); line-height:1.02; margin:0;}
     .hero-copy p{max-width:46ch; color:var(--text-soft); margin:22px 0 0; font-size:1rem; line-height:1.8;}
+    .hero-actions{display:flex; flex-wrap:wrap; gap:14px; margin-top:26px;}
+    .hero-actions .btn{min-width:170px;}
     .hero-cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:32px;}
-    .hero-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:14px; padding:20px; box-shadow:var(--shadow-soft);}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:24px; padding:22px; box-shadow:var(--shadow-soft); transition:transform .3s ease, border-color .3s ease, background .3s ease, opacity .4s ease, transform .4s ease; opacity:0; transform:translateY(18px);}
+    .hero-card.reveal{opacity:1; transform:translateY(0);}
+    .hero-card:hover{transform:translateY(-6px); border-color:rgba(99,102,241,.28); background:rgba(255,255,255,.08);}
     .hero-card h3{margin:0; font-size:1rem;}
     .hero-card p{margin:.85rem 0 0; color:var(--text-soft); font-size:.95rem; line-height:1.7;}
-    .hero-panel{position:relative; min-height:420px; border-radius:18px; overflow:hidden; padding:24px; background:var(--bg-panel); border:1px solid var(--border); box-shadow:var(--shadow-soft);
+    .hero-panel{position:relative; min-height:420px; border-radius:24px; overflow:hidden; padding:28px; background:linear-gradient(180deg, rgba(15,23,36,.95), rgba(9,17,36,.92)); border:1px solid var(--border); box-shadow:var(--shadow-soft);
       display:flex; flex-direction:column; justify-content:space-between;
     }
+    .hero-panel::before{content:''; position:absolute; inset:0; background:radial-gradient(circle at top right, rgba(99,102,241,.2), transparent 32%), radial-gradient(circle at bottom left, rgba(255,183,3,.12), transparent 24%); pointer-events:none;}
+    .hero-panel > *{position:relative; z-index:1;}
+    .tx-row.flash{animation:flashRow .9s ease forwards;}
+    @keyframes flashRow{0%{background:rgba(99,102,241,.16);}100%{background:rgba(255,255,255,0);}}
     .hero-panel h2{position:relative; z-index:1; margin:0 0 16px; font-size:1.25rem;}
     .hero-panel p{position:relative; z-index:1; color:var(--text-soft); line-height:1.8;}
     .hero-meta{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; position:relative; z-index:1;}
@@ -138,14 +146,21 @@
     .section-heading h2{font-size:clamp(32px,4vw,44px); margin:0; line-height:1.05;}
     .section-heading p{max-width:55ch; margin:16px 0 0; color:var(--text-soft);}
     .cards-grid{display:grid; gap:18px; grid-template-columns:repeat(2,minmax(0,1fr));}
-    .info-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:26px; box-shadow:var(--shadow-soft);}
-    .info-card .label{font-family:'JetBrains Mono',monospace; font-size:.82rem; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin-bottom:14px; display:inline-block;}
-    .info-card h3{margin:0 0 14px; font-size:1.15rem;}
-    .info-card p{margin:0; color:var(--text-soft); line-height:1.8;}
-    .feature-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch}
-    .feature-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:24px; padding:26px; box-shadow:var(--shadow-soft);}
-    .feature-card h4{margin:0 0 12px;}
-    .feature-card p{margin:0; color:var(--text-soft); line-height:1.75;}
+    .info-card{position:relative; background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:28px 26px 26px; box-shadow:var(--shadow-soft); transition:transform .3s ease, border-color .3s ease, background .3s ease, opacity .4s ease, transform .4s ease; opacity:0; transform:translateY(18px);}
+    .info-card.reveal{opacity:1; transform:translateY(0);}
+    .info-card:hover{transform:translateY(-5px); border-color:rgba(99,102,241,.28);}
+    .info-card::before{content:attr(data-number); position:absolute; top:22px; right:22px; font-size:.85rem; color:var(--text-soft); letter-spacing:.16em; text-transform:uppercase;}
+    .info-card .label{font-family:'JetBrains Mono',monospace; font-size:.82rem; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin-bottom:10px; display:inline-flex; align-items:center; gap:10px;}
+    .info-card .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+    .info-card h3{margin:.2rem 0 14px; font-size:1.3rem; line-height:1.2;}
+    .info-card p{margin:0; color:var(--text-soft); line-height:1.85;}
+    .methodology-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch;}
+    .methodology-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:24px; padding:28px; box-shadow:var(--shadow-soft); transition:transform .3s ease, border-color .3s ease, opacity .4s ease, transform .4s ease; opacity:0; transform:translateY(18px);}
+    .methodology-card.reveal{opacity:1; transform:translateY(0);}
+    .methodology-card:hover{transform:translateY(-6px); border-color:rgba(99,102,241,.28);}
+    .methodology-card .label{display:inline-flex; font-family:'JetBrains Mono',monospace; font-size:.82rem; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin-bottom:12px;}
+    .methodology-card h4{margin:0 0 14px;}
+    .methodology-card p{margin:0; color:var(--text-soft); line-height:1.75;}
     .detail-grid{display:grid; gap:18px; grid-template-columns:minmax(0,1.3fr) minmax(0,0.7fr);}
     .accent-panel{background:linear-gradient(180deg, rgba(255,183,3,.12), rgba(255,183,3,.04)); border:1px solid rgba(255,183,3,.14); border-radius:24px; padding:28px;}
     .accent-panel h3{margin:0 0 14px;}
@@ -158,19 +173,23 @@
     .nav-pill:hover{transform:translateY(-1px);}
 
     .algorithm-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch;}
-    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:28px; box-shadow:var(--shadow-soft); display:flex; flex-direction:column; min-height:320px; transition:transform .24s ease, border-color .24s ease;}
-    .algorithm-card:hover{transform:translateY(-4px); border-color:rgba(99,102,241,.32);}
-    .algorithm-card .top{display:flex; align-items:flex-start; gap:14px; margin-bottom:20px;}
-    .algorithm-card .tag{font-size:.78rem;}
-    .algorithm-card h3{margin:.2rem 0 0; font-size:1.4rem;}
-    .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.65; margin-bottom:18px;}
-    .algorithm-card .algorithm-detail{display:flex; flex-direction:column; gap:16px; flex:1;}
+    .algorithm-card{position:relative; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)); border:1px solid var(--border); border-radius:32px; padding:28px; box-shadow:var(--shadow-soft); display:flex; flex-direction:column; min-height:350px; transition:transform .24s ease, border-color .24s ease, box-shadow .24s ease, opacity .4s ease, transform .4s ease; opacity:0; transform:translateY(18px);}
+    .algorithm-card.reveal{opacity:1; transform:translateY(0);}
+    .algorithm-card:hover{transform:translateY(-5px); border-color:rgba(99,102,241,.32); box-shadow:0 18px 32px rgba(2,6,23,.18);}
+    .algorithm-card::before{content:''; position:absolute; inset:0; background:radial-gradient(circle at top left, rgba(99,102,241,.12), transparent 28%), radial-gradient(circle at bottom right, rgba(255,183,3,.1), transparent 24%); pointer-events:none;}
+    .algorithm-card .top{display:flex; align-items:flex-start; gap:14px; margin-bottom:18px; position:relative; z-index:1;}
+    .algorithm-card .tag{font-size:.78rem; font-weight:700; letter-spacing:.02em;}
+    .algorithm-card h3{margin:.2rem 0 0; font-size:1.45rem; line-height:1.1;}
+    .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.75; margin-bottom:18px; position:relative; z-index:1;}
+    .algorithm-card .algorithm-detail{display:flex; flex-direction:column; gap:16px; flex:1; position:relative; z-index:1;}
     .algorithm-card p{margin:0; color:var(--text-soft); line-height:1.75;}
+    .algorithm-card .algorithm-meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+    .algorithm-card .meta-pill{background:rgba(255,255,255,.06); border:1px solid var(--border); border-radius:999px; padding:10px 14px; font-size:.84rem; color:var(--text-soft);}
     .algorithm-card .pros-cons{display:grid; gap:14px; grid-template-columns:1fr 1fr; margin-top:14px;}
     .algorithm-card .detail-pill{background:rgba(99,102,241,.08); border-radius:18px; padding:14px 16px;}
     .algorithm-card .detail-pill span{display:block; font-size:.82rem; color:var(--accent); margin-bottom:8px;}
     .algorithm-card .detail-pill strong{display:block; color:var(--text);}
-    .algorithm-card .algorithm-footer{margin-top:auto; color:var(--text-soft); font-size:.95rem;}
+    .algorithm-card .algorithm-footer{margin-top:auto; color:var(--text-soft); font-size:.95rem; border-top:1px solid rgba(255,255,255,.07); padding-top:18px;}
     @media(max-width:1080px){.algorithm-grid{grid-template-columns:1fr 1fr;}}
     @media(max-width:840px){.algorithm-grid{grid-template-columns:1fr;}}
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
@@ -180,6 +199,12 @@
     .demo-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:28px; box-shadow:var(--shadow-soft);}
     .demo-top{display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;}
     .demo-top h3{margin:0; font-size:1.1rem;}
+    .demo-top strong{color:var(--accent);}
+    .lab-insight{margin-top:16px; color:var(--text-soft); line-height:1.75; border-left:3px solid var(--accent); padding-left:14px;}
+    .lab-actions{display:flex; flex-wrap:wrap; gap:12px; margin-top:18px;}
+    .lab-button{background:transparent; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:11px 18px; cursor:pointer; font-weight:600; transition:transform .2s ease, background .2s ease, color .2s ease;}
+    .lab-button:hover{background:rgba(99,102,241,.16); transform:translateY(-1px);}
+    .lab-button.active{background:var(--accent); color:#08111f;}
     .metric-grid{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:24px;}
     .metric-card{background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:20px; padding:18px; text-align:center;}
     .metric-card span{display:block; font-size:.78rem; color:var(--text-soft); margin-bottom:10px;}
@@ -188,19 +213,23 @@
     input[type=range]{width:100%; accent-color:var(--accent);}
     .range-labels{display:flex; justify-content:space-between; font-size:.85rem; color:var(--text-soft); margin-top:10px;}
     .demo-note{margin-top:18px; color:var(--text-soft); line-height:1.75; border-left:3px solid var(--accent); padding-left:14px;}
-    .quiz-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft); margin-bottom:18px;}
-    .quiz-card h4{margin:0 0 14px;}
+    .quiz-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:24px; box-shadow:var(--shadow-soft); margin-bottom:22px; transition:transform .24s ease, border-color .24s ease, background .2s ease;}
+    .quiz-card:hover{transform:translateY(-3px);}
+    .quiz-card .label{display:inline-flex; font-family:'JetBrains Mono',monospace; font-size:.82rem; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); margin-bottom:14px;}
+    .quiz-card h4{margin:0 0 14px; font-size:1.15rem; line-height:1.45;}
     .qoptions{display:grid; gap:14px; margin-top:16px;}
     .qopt{background:rgba(255,255,255,.06); border:1px solid var(--border); border-radius:16px; padding:16px 18px; text-align:left; cursor:pointer; transition:all .2s ease; color:var(--text);}
     .qopt:hover{transform:translateY(-1px); background:rgba(255,255,255,.08);}
     .qopt.correct{border-color:var(--success); background:rgba(52,211,153,.12); color:var(--success);}
     .qopt.incorrect{border-color:var(--danger); background:rgba(249,115,22,.12); color:var(--danger);}
-    .qfeedback{display:none; margin-top:16px; color:var(--text-soft); line-height:1.75;}
-    .quiz-score{display:none; background:rgba(255,255,255,.06); border:1px solid var(--accent); border-radius:24px; padding:28px; text-align:center; margin-top:18px;}
+    .qfeedback{display:none; margin-top:16px; padding:16px 18px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:18px; color:var(--text-soft); line-height:1.75;}
+    .quiz-score{display:none; background:rgba(255,255,255,.06); border:1px solid var(--accent); border-radius:28px; padding:28px; text-align:center; margin-top:18px;}
+    .quiz-score .label{display:block; color:var(--accent); font-family:'JetBrains Mono',monospace; letter-spacing:.16em; text-transform:uppercase; margin-bottom:10px;}
     .quiz-score p{margin:.65rem 0 0; color:var(--text-soft);}
     .glossary-grid{display:grid; gap:18px; grid-template-columns:repeat(2,minmax(0,1fr));}
-    .glossary-item{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:22px;}
-    .glossary-item dt{font-weight:700; margin-bottom:12px;}
+    .glossary-item{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:24px; transition:transform .2s ease, border-color .2s ease;}
+    .glossary-item:hover{transform:translateY(-3px); border-color:rgba(99,102,241,.28);}
+    .glossary-item dt{font-weight:700; margin-bottom:12px; color:var(--text);}
     .glossary-item dd{margin:0; color:var(--text-soft); line-height:1.8;}
     .modal-overlay{position:fixed; top:0; left:0; width:100%; height:100%; backdrop-filter:blur(16px); background:rgba(7,10,18,.7); display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity .2s ease;}
     .modal-overlay.open{opacity:1; pointer-events:auto;}
@@ -242,12 +271,16 @@
       <div class="hero-copy">
         <div class="hero-eyebrow">OVA · Experiencia interactiva</div>
         <h1>Transforma el aprendizaje sobre fraude financiero en una experiencia profesional y práctica</h1>
-        <p>Un recurso digital con navegación modular, visuales claros, análisis de umbrales y evaluación interactiva para mejorar la experiencia de usuario y apoyar la comprensión de modelos de detección de fraude.</p>
+        <p>Un recurso digital con navegación modular, elementos visuales claros, análisis de umbrales y evaluación interactiva para mejorar la experiencia de usuario y apoyar la comprensión de modelos de detección de fraude.</p>
         <div class="hero-cards">
-          <div class="hero-card"><h3>Visión clara</h3><p>Organiza la información en vistas navegables, con contenido enfocado por cada etapa del aprendizaje.</p></div>
-          <div class="hero-card"><h3>Interactividad real</h3><p>Mantiene el laboratorio, el flujo de transacciones y las preguntas con feedback inmediato.</p></div>
-          <div class="hero-card"><h3>Diseño moderno</h3><p>Interfaz tipo SaaS con tipografía limpia, tarjetas suaves, animate hover y modo claro/oscuro.</p></div>
-          <div class="hero-card"><h3>Contenido estructurado</h3><p>Los objetivos, metodología y caso de uso se presentan como módulos independientes para mejorar la experiencia.</p></div>
+          <div class="hero-card"><h3>Visión clara</h3><p>Organiza la información en vistas navegables, con contenido enfocado en cada etapa del aprendizaje.</p></div>
+          <div class="hero-card"><h3>Interactividad real</h3><p>Incluye laboratorio, simulación de transacciones y preguntas con retroalimentación inmediata.</p></div>
+          <div class="hero-card"><h3>Diseño moderno</h3><p>Interfaz limpia con tipografía profesional, tarjetas con bordes suaves y modo claro y oscuro.</p></div>
+          <div class="hero-card"><h3>Contenido estructurado</h3><p>Los objetivos, la metodología y los casos de uso se presentan en módulos independientes para mejorar el enfoque.</p></div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn primary" data-view-target="view-algorithms">Ver algoritmos</button>
+          <button class="btn secondary" data-view-target="view-lab">Ir al laboratorio</button>
         </div>
         <div class="tab-actions">
           <button class="nav-pill active" data-view-target="view-objectives">Objetivos</button>
@@ -260,7 +293,7 @@
         <h2>Monitoreo de transacciones</h2>
         <p>Un panel simulado de transacciones en tiempo real ayuda a visualizar cómo los modelos evalúan el riesgo a medida que se generan nuevos eventos.</p>
         <div class="feed-card">
-          <div class="feed-header"><span>Últimas transacciones</span><span class="live">En vivo</span></div>
+          <div class="feed-header"><span>Últimas transacciones</span><span class="live">En tiempo real</span></div>
           <div class="feed-body" id="feedBody"></div>
         </div>
         <div class="hero-meta">
@@ -283,13 +316,29 @@
         </div>
       </div>
       <div class="cards-grid">
-        <div class="info-card"><span class="label">Conceptual</span><h3>Comprende el reto</h3><p>Explica por qué el fraude financiero es un problema de clasificación con datos desbalanceados y por qué la detección temprana es crítica.</p></div>
-        <div class="info-card"><span class="label">Técnico</span><h3>Compara modelos</h3><p>Reconoce las diferencias entre regresión logística, árboles de decisión y detección de anomalías en un contexto real.</p></div>
-        <div class="info-card"><span class="label">Analítico</span><h3>Interpreta métricas</h3><p>Evalúa las implicaciones de precisión, recall, F1-score y exactitud al ajustar un umbral de decisión.</p></div>
-        <div class="info-card"><span class="label">Aplicado</span><h3>Conecta con la práctica</h3><p>Relaciona cada algoritmo con el tipo de fraude que puede resolver en un proceso de pago digital o transferencia bancaria.</p></div>
+        <div class="info-card objective-card" data-reveal data-number="01">
+          <div class="card-top"><span class="label">Conceptual</span></div>
+          <h3>Comprender el reto</h3>
+          <p>Identificar por qué el fraude financiero constituye un problema de clasificación desbalanceada y por qué la detección temprana es determinante.</p>
+        </div>
+        <div class="info-card objective-card" data-reveal data-number="02">
+          <div class="card-top"><span class="label">Técnico</span></div>
+          <h3>Comparar modelos</h3>
+          <p>Reconocer las diferencias entre regresión logística, árboles de decisión y detección de anomalías en un contexto real de negocio.</p>
+        </div>
+        <div class="info-card objective-card" data-reveal data-number="03">
+          <div class="card-top"><span class="label">Analítico</span></div>
+          <h3>Interpretar métricas</h3>
+          <p>Evaluar cómo precisión, recall, F1-score y exactitud influyen en la selección de un umbral de decisión.</p>
+        </div>
+        <div class="info-card objective-card" data-reveal data-number="04">
+          <div class="card-top"><span class="label">Aplicado</span></div>
+          <h3>Conectar con la práctica</h3>
+          <p>Relacionar cada algoritmo con el tipo de fraude que puede resolver en pagos digitales y transferencias bancarias.</p>
+        </div>
       </div>
       <div class="detail-grid" style="margin-top:28px;">
-        <div class="accent-panel"><h3>Diseño centrado en el estudiante</h3><p>Este OVA separa el contenido en vistas independientes para que el usuario no pierda foco y pueda avanzar de forma guiada sin scroll excesivo.</p></div>
+        <div class="accent-panel"><h3>Diseño centrado en el estudiante</h3><p>Este OVA separa el contenido en vistas independientes para que el usuario no pierda foco y pueda avanzar de forma guiada sin desplazamiento excesivo.</p></div>
         <div class="accent-panel"><h3>Evaluación inmediata</h3><p>La sección de evaluación ofrece retroalimentación instantánea, fomentando un aprendizaje activo y evitando que el estudiante solo lea sin interactuar.</p></div>
       </div>
     </section>
@@ -302,15 +351,15 @@
           <p>Un enfoque progresivo que combina teoría, análisis de decisiones y práctica para facilitar la retención y la comprensión real del problema.</p>
         </div>
       </div>
-      <div class="feature-grid">
-        <div class="feature-card"><span class="label">Conceptual</span><h4>Fundamentos del fraude</h4><p>Explora los patrones y las amenazas que transforman una transacción normal en un evento sospechoso.</p></div>
-        <div class="feature-card"><span class="label">Analítico</span><h4>Métricas de decisión</h4><p>Trabaja con precisión, recall y F1-score para entender cómo cada elección afecta el desempeño del modelo.</p></div>
-        <div class="feature-card"><span class="label">Aplicado</span><h4>Simulación interactiva</h4><p>Interactúa con un laboratorio que muestra cómo cambia la clasificación cuando se mueve el umbral de riesgo.</p></div>
+      <div class="methodology-grid">
+        <div class="methodology-card" data-reveal><span class="label">Conceptual</span><h4>Fundamentos del fraude</h4><p>Analizar los patrones y las amenazas que convierten una transacción normal en un evento sospechoso.</p></div>
+        <div class="methodology-card" data-reveal><span class="label">Analítico</span><h4>Métricas de decisión</h4><p>Evaluar precisión, recall y F1-score para comprender cómo cada elección impacta el desempeño del modelo.</p></div>
+        <div class="methodology-card" data-reveal><span class="label">Aplicado</span><h4>Simulación interactiva</h4><p>Experimentar con un laboratorio que muestra cómo varía la clasificación al ajustar el umbral de riesgo.</p></div>
       </div>
       <div class="hero-cards" style="margin-top:28px;">
         <div class="hero-card"><h3>Etapa 01</h3><p>Comprende el problema y los riesgos del fraude financiero dentro de un ecosistema bancario.</p></div>
         <div class="hero-card"><h3>Etapa 02</h3><p>Estudia los algoritmos disponibles y cuándo cada uno es más efectivo.</p></div>
-        <div class="hero-card"><h3>Etapa 03</h3><p>Ejecuta la simulación del umbral de detección y observa su impacto.</p></div>
+        <div class="hero-card"><h3>Etapa 03</h3><p>Realiza la simulación del umbral de detección y analiza su impacto.</p></div>
         <div class="hero-card"><h3>Etapa 04</h3><p>Consolida el conocimiento con preguntas prácticas y explicaciones inmediatas.</p></div>
       </div>
     </section>
@@ -324,23 +373,25 @@
         </div>
       </div>
       <div class="algorithm-grid">
-        <article class="algorithm-card">
+        <article class="algorithm-card" data-reveal>
           <div class="top"><div><span class="tag ok">Supervisado</span><h3>Regresión logística</h3></div></div>
           <div class="algorithm-detail">
             <p class="summary-preview">Modelo supervisado que estima la probabilidad de fraude usando variables transaccionales y de comportamiento. Es ligero, claro y fácil de explicar.</p>
+            <div class="algorithm-meta"><span class="meta-pill">Uso ideal: riesgo estructurado</span><span class="meta-pill">Datos: etiquetas históricas</span></div>
             <p>Este método ajusta probabilidades a partir de datos históricos etiquetados, por lo que ofrece transparencia sobre qué factores elevan el riesgo.</p>
             <div class="pros-cons">
               <div class="detail-pill"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
               <div class="detail-pill"><span>Limitación</span><strong>Solo modela relaciones lineales</strong></div>
             </div>
-            <div class="algorithm-footer">Perfecto cuando necesitas decisiones rápidas y explicación clara del riesgo de fraude.</div>
+            <div class="algorithm-footer">Adecuado cuando se requieren decisiones rápidas y una explicación clara del riesgo de fraude.</div>
           </div>
         </article>
 
-        <article class="algorithm-card">
+        <article class="algorithm-card" data-reveal>
           <div class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></div>
           <div class="algorithm-detail">
             <p class="summary-preview">Ensamblado de árboles que encuentra patrones complejos combinando múltiples modelos. Es robusto y reduce el sobreajuste.</p>
+            <div class="algorithm-meta"><span class="meta-pill">Uso ideal: patrones no lineales</span><span class="meta-pill">Datos: variables mixtas</span></div>
             <p>Se construyen muchos árboles sobre muestras diferentes; la predicción final surge de la mayoría o del promedio de los resultados individuales.</p>
             <div class="pros-cons">
               <div class="detail-pill"><span>Ventaja</span><strong>Alta precisión y robustez frente al ruido</strong></div>
@@ -351,10 +402,11 @@
           </div>
         </article>
 
-        <article class="algorithm-card">
+        <article class="algorithm-card" data-reveal>
           <div class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></div>
           <div class="algorithm-detail">
             <p class="summary-preview">Detecta anomalías aislando observaciones inusuales con particiones aleatorias. No necesita etiquetas de fraude.</p>
+            <div class="algorithm-meta"><span class="meta-pill">Uso ideal: anomalías emergentes</span><span class="meta-pill">Datos: sin etiquetas previas</span></div>
             <p>Las transacciones atípicas se aíslan con menos pasos que las normales, creando una puntuación de anomalía efectiva.</p>
             <div class="pros-cons">
               <div class="detail-pill"><span>Ventaja</span><strong>Funciona sin etiquetas y escala bien</strong></div>
@@ -376,13 +428,18 @@
         </div>
       </div>
       <div class="demo-panel">
-        <div class="demo-card">
+        <div class="demo-card" data-reveal>
           <div class="demo-top"><h3>Umbral de riesgo</h3><strong id="thVal">Umbral: 50</strong></div>
           <div class="range-wrap"><input type="range" id="threshold" min="0" max="100" value="50"></div>
           <div class="range-labels"><span>Más detección</span><span>Más precisión</span></div>
-          <p class="demo-note" id="demoNote">Simulación sobre 40 transacciones de referencia (8 fraudulentas, 32 legítimas). Ajusta el umbral para ver cómo cambia el balance entre detecciones y falsas alarmas.</p>
+          <div class="lab-actions">
+            <button class="lab-button" data-threshold="30">Escenario sensible</button>
+            <button class="lab-button" data-threshold="70">Escenario estricto</button>
+          </div>
+          <p class="demo-note" id="demoNote">Simulación sobre 40 transacciones de referencia (8 fraudulentas, 32 legítimas). Ajusta el umbral para ver cómo cambia el balance entre detecciones y alertas falsas.</p>
+          <div class="lab-insight" id="labInsight">Encuentra el umbral que mejor equilibra la detección de fraude con la experiencia del cliente.</div>
         </div>
-        <div class="demo-card">
+        <div class="demo-card" data-reveal>
           <div class="metric-grid">
             <div class="metric-card"><span>Verdaderos positivos</span><strong id="tpN">0</strong></div>
             <div class="metric-card"><span>Falsos positivos</span><strong id="fpN">0</strong></div>
@@ -420,14 +477,14 @@
         </div>
       </div>
       <div class="glossary-grid">
-        <div class="glossary-item"><dt>Falso positivo</dt><dd>Transacción legítima marcada incorrectamente como fraudulenta.</dd></div>
-        <div class="glossary-item"><dt>Falso negativo</dt><dd>Transacción fraudulenta que el modelo no detecta.</dd></div>
-        <div class="glossary-item"><dt>Precisión</dt><dd>Porcentaje de alertas de fraude que son realmente fraudes.</dd></div>
-        <div class="glossary-item"><dt>Recall</dt><dd>Porcentaje de fraude real que el modelo identifica correctamente.</dd></div>
-        <div class="glossary-item"><dt>Overfitting</dt><dd>Cuando un modelo memoriza ejemplos de entrenamiento y falla en datos nuevos.</dd></div>
-        <div class="glossary-item"><dt>Dataset desbalanceado</dt><dd>Situación donde el fraude representa una porción muy pequeña de las transacciones.</dd></div>
-        <div class="glossary-item"><dt>Isolation Forest</dt><dd>Algoritmo que encuentra anomalías aislando observaciones atípicas.</dd></div>
-        <div class="glossary-item"><dt>Umbral</dt><dd>Valor mínimo de riesgo necesario para clasificar una transacción como fraude.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Falso positivo</dt><dd>Transacción legítima marcada incorrectamente como fraudulenta.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Falso negativo</dt><dd>Transacción fraudulenta que el modelo no detecta.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Precisión</dt><dd>Porcentaje de alertas de fraude que son realmente fraudes.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Recall</dt><dd>Porcentaje de fraude real que el modelo identifica correctamente.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Overfitting</dt><dd>Cuando un modelo memoriza ejemplos de entrenamiento y falla en datos nuevos.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Dataset desbalanceado</dt><dd>Situación donde el fraude representa una porción muy pequeña de las transacciones.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Isolation Forest</dt><dd>Algoritmo que encuentra anomalías aislando observaciones atípicas.</dd></div>
+        <div class="glossary-item" data-reveal><dt>Umbral</dt><dd>Valor mínimo de riesgo necesario para clasificar una transacción como fraude.</dd></div>
       </div>
     </section>
   </main>
@@ -443,7 +500,7 @@
     <div class="modal">
       <button class="modal-close" id="modalClose">×</button>
       <h3>Por qué cambiar de sección</h3>
-      <p>Esta aplicación ahora usa vistas separadas para evitar el exceso de contenido en una única página larga, lo que mejora la navegación, la atención del usuario y la experiencia en dispositivos móviles.</p>
+      <p>Esta aplicación utiliza vistas separadas para evitar el exceso de contenido en una única página larga, lo que mejora la navegación, la atención del usuario y la experiencia en dispositivos móviles.</p>
       <p>Cada módulo se activa desde el menú y conserva el contenido existente del OVA, permitiendo acceder rápidamente a objetivos, metodología, laboratorio, evaluación y glosario.</p>
     </div>
   </div>
@@ -510,9 +567,26 @@
       row.className = 'tx-row';
       row.innerHTML = `<span class="id">#${tx.id}</span><span class="merchant">${tx.merchant}</span><span class="amt">$${tx.amt}</span><span class="tag ${tx.isFraud ? 'fraud':'ok'}">${tx.isFraud ? 'FRAUDE':'OK'}</span>`;
       feedBody.insertBefore(row, feedBody.firstChild);
+      flashFeedRow(row);
       while(feedBody.children.length > 8) feedBody.removeChild(feedBody.lastChild);
     }
+    function flashFeedRow(row){
+      row.classList.add('flash');
+      setTimeout(()=> row.classList.remove('flash'), 900);
+    }
     for(let i=0;i<7;i++) addTxRow();
+    const heroCards = document.querySelectorAll('.hero-copy .hero-card');
+    heroCards.forEach((card, index) => setTimeout(() => card.classList.add('reveal'), 120 * index));
+    const revealCards = document.querySelectorAll('[data-reveal]');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('reveal');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.2});
+    revealCards.forEach(card => revealObserver.observe(card));
 
     const dataset = [
       {s:92,f:1},{s:88,f:1},{s:81,f:1},{s:76,f:1},{s:69,f:1},{s:61,f:1},{s:54,f:1},{s:47,f:1},
@@ -560,10 +634,19 @@
       } else if(threshold >= 70){
         note.textContent = 'Umbral alto: reduce alertas falsas y mejora la precisión, pero deja pasar más fraudes sin detectar.';
       } else {
-        note.textContent = 'Zona balanceada: aquí se busca mantener un buen trade-off entre detección de fraude y experiencia del usuario.';
+        note.textContent = 'Zona balanceada: aquí se busca mantener un equilibrio adecuado entre detección de fraude y experiencia del usuario.';
       }
     }
     thInput.addEventListener('input', renderDemo);
+    const labButtons = document.querySelectorAll('.lab-button');
+    labButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const value = Number(button.dataset.threshold);
+        thInput.value = value;
+        renderDemo();
+        labButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+      });
+    });
     renderDemo();
 
     const questions = [
@@ -594,6 +677,7 @@
       }
       const card = document.createElement('div');
       card.className = 'quiz-card';
+      card.setAttribute('data-reveal', '');
       card.innerHTML = `<div class="label">Pregunta ${qi+1} / ${questions.length}</div><h4>${item.q}</h4><div class="qoptions">${shuffled.map((text, idx)=>`<button class="qopt" data-index="${idx}">${text}</button>`).join('')}</div><div class="qfeedback"></div>`;
       quizContainer.appendChild(card);
       const optionButtons = card.querySelectorAll('.qopt');
