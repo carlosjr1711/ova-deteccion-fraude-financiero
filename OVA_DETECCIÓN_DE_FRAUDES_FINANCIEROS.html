@@ -157,27 +157,22 @@
     .nav-pill.active{background:var(--accent); color:#08111f; border-color:transparent;}
     .nav-pill:hover{transform:translateY(-1px);}
 
-    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:0; box-shadow:var(--shadow-soft); overflow:hidden; display:flex; flex-direction:column}
-    .algorithm-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:18px}
+    .algorithm-grid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:stretch;}
+    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:28px; padding:28px; box-shadow:var(--shadow-soft); display:flex; flex-direction:column; min-height:320px; transition:transform .24s ease, border-color .24s ease;}
+    .algorithm-card:hover{transform:translateY(-4px); border-color:rgba(99,102,241,.32);}
+    .algorithm-card .top{display:flex; align-items:flex-start; gap:14px; margin-bottom:20px;}
     .algorithm-card .tag{font-size:.78rem;}
-    .algorithm-card h3{margin:.2rem 0 10px;}
-    .algorit
-    hm-card summary{cursor:pointer; list-style:none;}
-    .algorithm-card summary::-webkit-details-marker{display:none;}
-    .algorithm-card .card-body{padding:0 18px 18px; display:flex; flex-direction:column; gap:12px; flex:1}
-    .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.45; display:block; max-height:3.2em; overflow:hidden}
-    .algorithm-card .details-content{max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.2,.8,.2,1); margin-top:8px; color:var(--text-soft); line-height:1.8}
-    .algorithm-card[open] .details-content{ /* fallback if JS not available */ max-height:1200px }
-    .algorithm-card .pros-cons{display:grid; gap:16px; grid-template-columns:1fr 1fr; margin-top:18px;}
-    /* ensure collapsed cards have equal height but can grow when expanded */
-    .algorithm-card:not([open]){min-height:220px}
-    .algorithm-card:not([open]) .card-body{min-height:140px}
-    @media(max-width:840px){
-      .algorithm-card:not([open]){min-height:160px}
-      .algorithm-card:not([open]) .card-body{min-height:110px}
-    }
-    .toggle-more{align-self:flex-start; background:var(--accent); color:#071024; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700}
-    .toggle-more:hover{filter:brightness(.95)}
+    .algorithm-card h3{margin:.2rem 0 0; font-size:1.4rem;}
+    .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.65; margin-bottom:18px;}
+    .algorithm-card .algorithm-detail{display:flex; flex-direction:column; gap:16px; flex:1;}
+    .algorithm-card p{margin:0; color:var(--text-soft); line-height:1.75;}
+    .algorithm-card .pros-cons{display:grid; gap:14px; grid-template-columns:1fr 1fr; margin-top:14px;}
+    .algorithm-card .detail-pill{background:rgba(99,102,241,.08); border-radius:18px; padding:14px 16px;}
+    .algorithm-card .detail-pill span{display:block; font-size:.82rem; color:var(--accent); margin-bottom:8px;}
+    .algorithm-card .detail-pill strong{display:block; color:var(--text);}
+    .algorithm-card .algorithm-footer{margin-top:auto; color:var(--text-soft); font-size:.95rem;}
+    @media(max-width:1080px){.algorithm-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:840px){.algorithm-grid{grid-template-columns:1fr;}}
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
     .small-card span{display:block; font-size:.82rem; color:var(--text-soft); margin-bottom:8px;}
     .small-card strong{display:block; font-size:1rem;}
@@ -328,55 +323,47 @@
           <p>Cada algoritmo se presenta con su propósito, ventajas y limitaciones en palabras claras.</p>
         </div>
       </div>
-      <div class="feature-grid">
-        <details class="algorithm-card">
-          <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Regresión logística</h3></div></summary>
-          <div class="card-body">
-            <p class="summary-preview">Modelo supervisado que estima la probabilidad de fraude a partir de variables transaccionales y de comportamiento. Es sencillo, eficiente y fácil de interpretar.</p>
-            <div class="details-content"><p>Estimación de probabilidades basada en variables transaccionales y de comportamiento. Es ideal para decisiones rápidas y modelos explicables.</p><p>Se utiliza cuando se necesita interpretar claramente qué factores elevan el riesgo de fraude y se cuenta con datos históricos etiquetados.</p>
+      <div class="algorithm-grid">
+        <article class="algorithm-card">
+          <div class="top"><div><span class="tag ok">Supervisado</span><h3>Regresión logística</h3></div></div>
+          <div class="algorithm-detail">
+            <p class="summary-preview">Modelo supervisado que estima la probabilidad de fraude usando variables transaccionales y de comportamiento. Es ligero, claro y fácil de explicar.</p>
+            <p>Este método ajusta probabilidades a partir de datos históricos etiquetados, por lo que ofrece transparencia sobre qué factores elevan el riesgo.</p>
             <div class="pros-cons">
-              <div class="small-card"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
-              <div class="small-card"><span>Limitación</span><strong>Captura solo relaciones lineales</strong></div>
-            </div></div>
-            <button class="toggle-more">Ver más ▼</button>
-          </div>
-        </details>
-
-        <details class="algorithm-card">
-          <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
-          <div class="card-body">
-            <p class="summary-preview">Ensamblado de árboles que mejora la precisión combinando múltiples modelos; captura relaciones no lineales y es robusto frente al ruido.</p>
-            <div class="details-content">
-              <p>Random Forest es un ensamblado de árboles de decisión que combina múltiples modelos para mejorar la precisión y reducir el sobreajuste.</p>
-              <p>Cómo funciona: se generan muchos árboles sobre muestras aleatorias del conjunto de entrenamiento (bootstrap) y subconjuntos de características; la predicción final proviene de la votación o el promedio de los árboles individuales.</p>
-              <p>Cuándo se utiliza: cuando los datos presentan relaciones no lineales, interacciones entre variables y se requiere un modelo robusto frente al ruido.</p>
-              <div class="pros-cons">
-                <div class="small-card"><span>Ventaja</span><strong>Alta precisión y robustez frente al ruido</strong></div>
-                <div class="small-card"><span>Limitación</span><strong>Menor interpretabilidad y mayor coste computacional</strong></div>
-              </div>
-              <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Combinar variables de monto, frecuencia, ubicación y comportamiento del usuario para estimar probabilidad de fraude en transacciones online.</strong></div>
+              <div class="detail-pill"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
+              <div class="detail-pill"><span>Limitación</span><strong>Solo modela relaciones lineales</strong></div>
             </div>
-            <button class="toggle-more">Ver más ▼</button>
+            <div class="algorithm-footer">Perfecto cuando necesitas decisiones rápidas y explicación clara del riesgo de fraude.</div>
           </div>
-        </details>
+        </article>
 
-        <details class="algorithm-card">
-          <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
-          <div class="card-body">
-            <p class="summary-preview">Técnica no supervisada que aísla observaciones atípicas mediante particiones aleatorias; útil para detectar anomalías sin etiquetas.</p>
-            <div class="details-content">
-              <p>Isolation Forest es un método de detección de anomalías no supervisado que aísla observaciones atípicas construyendo árboles de partición aleatoria.</p>
-              <p>Cómo funciona: genera múltiples árboles de aislamiento; las observaciones que requieren menos particiones para aislarse obtienen puntuaciones de anomalía más altas.</p>
-              <p>Cuándo se utiliza: útil cuando no se dispone de etiquetas de fraude y se desea detectar patrones nuevos o emergentes en grandes volúmenes de datos.</p>
-              <div class="pros-cons">
-                <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías sin etiquetas y escala bien</strong></div>
-                <div class="small-card"><span>Limitación</span><strong>Puede producir falsos positivos y requiere ajuste de parámetros</strong></div>
-              </div>
-              <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Identificar transacciones inusuales por patrón de origen/destino o por comportamiento horario fuera de lo habitual.</strong></div>
+        <article class="algorithm-card">
+          <div class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></div>
+          <div class="algorithm-detail">
+            <p class="summary-preview">Ensamblado de árboles que encuentra patrones complejos combinando múltiples modelos. Es robusto y reduce el sobreajuste.</p>
+            <p>Se construyen muchos árboles sobre muestras diferentes; la predicción final surge de la mayoría o del promedio de los resultados individuales.</p>
+            <div class="pros-cons">
+              <div class="detail-pill"><span>Ventaja</span><strong>Alta precisión y robustez frente al ruido</strong></div>
+              <div class="detail-pill"><span>Limitación</span><strong>Menor interpretabilidad y mayor coste computacional</strong></div>
             </div>
-            <button class="toggle-more">Ver más ▼</button>
+            <div class="detail-pill"><span>Ejemplo</span><strong>Combina monto, frecuencia, ubicación y comportamiento para detectar fraude en compras online.</strong></div>
+            <div class="algorithm-footer">Recomendado cuando las relaciones entre variables son complejas y no lineales.</div>
           </div>
-        </details>
+        </article>
+
+        <article class="algorithm-card">
+          <div class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></div>
+          <div class="algorithm-detail">
+            <p class="summary-preview">Detecta anomalías aislando observaciones inusuales con particiones aleatorias. No necesita etiquetas de fraude.</p>
+            <p>Las transacciones atípicas se aíslan con menos pasos que las normales, creando una puntuación de anomalía efectiva.</p>
+            <div class="pros-cons">
+              <div class="detail-pill"><span>Ventaja</span><strong>Funciona sin etiquetas y escala bien</strong></div>
+              <div class="detail-pill"><span>Limitación</span><strong>Puede generar falsos positivos y requiere ajuste</strong></div>
+            </div>
+            <div class="detail-pill"><span>Ejemplo</span><strong>Identifica transacciones inusuales por patrón de origen/destino o comportamiento horario atípico.</strong></div>
+            <div class="algorithm-footer">Ideal para descubrir fraude emergente cuando los datos históricos son limitados.</div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -647,67 +634,6 @@
         modalOverlay.classList.add('open');
       }
     });
-
-    // Enhancements for algorithm cards: always show a short summary and provide a "Ver más/Ver menos" button with smooth animation
-    (function(){
-      const cards = document.querySelectorAll('.algorithm-card');
-      function updateButton(details){
-        const btn = details.querySelector('.toggle-more');
-        if(!btn) return;
-        btn.textContent = details.open ? 'Ver menos ▲' : 'Ver más ▼';
-      }
-      cards.forEach(details => {
-        const content = details.querySelector('.details-content');
-        const btn = details.querySelector('.toggle-more');
-        const summary = details.querySelector('summary');
-        // make the title non-interactive: prevent default toggling from the <summary>
-        if(summary){
-          summary.setAttribute('tabindex','-1');
-          summary.style.cursor = 'default';
-          summary.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); });
-          summary.addEventListener('mousedown', e => { e.preventDefault(); });
-          summary.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); } });
-        }
-        // initialize max-height according to open state
-        if(content){
-          if(details.open){
-            content.style.maxHeight = content.scrollHeight + 'px';
-          } else {
-            content.style.maxHeight = '0px';
-          }
-        }
-        updateButton(details);
-        // button toggles open state (button is the only control now)
-        if(btn){
-          btn.addEventListener('click', (ev) => {
-            ev.preventDefault();
-            details.open = !details.open;
-            setTimeout(()=>{
-              if(content){
-                if(details.open){
-                  content.style.maxHeight = content.scrollHeight + 'px';
-                  details.scrollIntoView({behavior:'smooth', block:'center'});
-                } else {
-                  content.style.maxHeight = '0px';
-                }
-              }
-            }, 20);
-            updateButton(details);
-          });
-        }
-        // if details is toggled programmatically, keep UI in sync
-        details.addEventListener('toggle', ()=>{
-          if(content){
-            if(details.open){
-              content.style.maxHeight = content.scrollHeight + 'px';
-            } else {
-              content.style.maxHeight = '0px';
-            }
-          }
-          updateButton(details);
-        });
-      });
-    })();
   </script>
 </body>
 </html>
