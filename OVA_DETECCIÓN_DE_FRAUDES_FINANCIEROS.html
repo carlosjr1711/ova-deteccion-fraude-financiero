@@ -155,14 +155,20 @@
     .nav-pill.active{background:var(--accent); color:#08111f; border-color:transparent;}
     .nav-pill:hover{transform:translateY(-1px);}
 
-    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:26px; box-shadow:var(--shadow-soft);}
-    .algorithm-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px;}
+    .algorithm-card{background:var(--bg-panel); border:1px solid var(--border); border-radius:24px; padding:0; box-shadow:var(--shadow-soft); overflow:hidden}
+    .algorithm-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:18px}
     .algorithm-card .tag{font-size:.78rem;}
     .algorithm-card h3{margin:.2rem 0 10px;}
     .algorithm-card summary{cursor:pointer; list-style:none;}
     .algorithm-card summary::-webkit-details-marker{display:none;}
-    .algorithm-card .details-content{margin-top:16px; color:var(--text-soft); line-height:1.8;}
+    .algorithm-card .card-body{padding:0 18px 18px; display:flex; flex-direction:column; gap:12px}
+    .algorithm-card .summary-preview{color:var(--text-soft); line-height:1.45; display:block; max-height:3.2em; overflow:hidden}
+    .algorithm-card .details-content{max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.2,.8,.2,1); margin-top:8px; color:var(--text-soft); line-height:1.8}
+    .algorithm-card[open] .details-content{ /* fallback if JS not available */ max-height:1200px }
     .algorithm-card .pros-cons{display:grid; gap:16px; grid-template-columns:1fr 1fr; margin-top:18px;}
+    .algorithm-card:not([open]){min-height:200px}
+    .toggle-more{align-self:flex-start; background:var(--accent); color:#071024; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700}
+    .toggle-more:hover{filter:brightness(.95)}
     .small-card{background:rgba(255,255,255,.04); border-radius:18px; padding:16px;}
     .small-card span{display:block; font-size:.82rem; color:var(--text-soft); margin-bottom:8px;}
     .small-card strong{display:block; font-size:1rem;}
@@ -316,14 +322,21 @@
       <div class="feature-grid">
         <details class="algorithm-card" open>
           <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Regresión logística</h3></div></summary>
-          <div class="details-content"><p>Estimación de probabilidades basada en variables transaccionales y de comportamiento. Es ideal para decisiones rápidas y modelos explicables.</p><p>Se utiliza cuando se necesita interpretar claramente qué factores elevan el riesgo de fraude y se cuenta con datos históricos etiquetados.</p>
-          <div class="pros-cons">
-            <div class="small-card"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
-            <div class="small-card"><span>Limitación</span><strong>Captura solo relaciones lineales</strong></div>
-          </div></div>
+          <div class="card-body">
+            <p class="summary-preview">Modelo supervisado que estima la probabilidad de fraude a partir de variables transaccionales y de comportamiento. Es sencillo, eficiente y fácil de interpretar.</p>
+            <div class="details-content"><p>Estimación de probabilidades basada en variables transaccionales y de comportamiento. Es ideal para decisiones rápidas y modelos explicables.</p><p>Se utiliza cuando se necesita interpretar claramente qué factores elevan el riesgo de fraude y se cuenta con datos históricos etiquetados.</p>
+            <div class="pros-cons">
+              <div class="small-card"><span>Ventaja</span><strong>Rápido e interpretable</strong></div>
+              <div class="small-card"><span>Limitación</span><strong>Captura solo relaciones lineales</strong></div>
+            </div></div>
+            <button class="toggle-more">Ver menos ▲</button>
+          </div>
         </details>
-          <details class="algorithm-card">
-            <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
+
+        <details class="algorithm-card">
+          <summary class="top"><div><span class="tag ok">Supervisado</span><h3>Árboles / Random Forest</h3></div></summary>
+          <div class="card-body">
+            <p class="summary-preview">Ensamblado de árboles que mejora la precisión combinando múltiples modelos; captura relaciones no lineales y es robusto frente al ruido.</p>
             <div class="details-content">
               <p>Random Forest es un ensamblado de árboles de decisión que combina múltiples modelos para mejorar la precisión y reducir el sobreajuste.</p>
               <p>Cómo funciona: se generan muchos árboles sobre muestras aleatorias del conjunto de entrenamiento (bootstrap) y subconjuntos de características; la predicción final proviene de la votación o el promedio de los árboles individuales.</p>
@@ -334,20 +347,26 @@
               </div>
               <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Combinar variables de monto, frecuencia, ubicación y comportamiento del usuario para estimar probabilidad de fraude en transacciones online.</strong></div>
             </div>
-          </details>
-            <details class="algorithm-card">
-              <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
-              <div class="details-content">
-                <p>Isolation Forest es un método de detección de anomalías no supervisado que aísla observaciones atípicas construyendo árboles de partición aleatoria.</p>
-                <p>Cómo funciona: genera múltiples árboles de aislamiento; las observaciones que requieren menos particiones para aislarse obtienen puntuaciones de anomalía más altas.</p>
-                <p>Cuándo se utiliza: útil cuando no se dispone de etiquetas de fraude y se desea detectar patrones nuevos o emergentes en grandes volúmenes de datos.</p>
-                <div class="pros-cons">
-                  <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías sin etiquetas y escala bien</strong></div>
-                  <div class="small-card"><span>Limitación</span><strong>Puede producir falsos positivos y requiere ajuste de parámetros</strong></div>
-                </div>
-                <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Identificar transacciones inusuales por patrón de origen/destino o por comportamiento horario fuera de lo habitual.</strong></div>
+            <button class="toggle-more">Ver más ▼</button>
+          </div>
+        </details>
+
+        <details class="algorithm-card">
+          <summary class="top"><div><span class="tag" style="background:rgba(255,183,3,.14); color:var(--accent);">No supervisado</span><h3>Isolation Forest</h3></div></summary>
+          <div class="card-body">
+            <p class="summary-preview">Técnica no supervisada que aísla observaciones atípicas mediante particiones aleatorias; útil para detectar anomalías sin etiquetas.</p>
+            <div class="details-content">
+              <p>Isolation Forest es un método de detección de anomalías no supervisado que aísla observaciones atípicas construyendo árboles de partición aleatoria.</p>
+              <p>Cómo funciona: genera múltiples árboles de aislamiento; las observaciones que requieren menos particiones para aislarse obtienen puntuaciones de anomalía más altas.</p>
+              <p>Cuándo se utiliza: útil cuando no se dispone de etiquetas de fraude y se desea detectar patrones nuevos o emergentes en grandes volúmenes de datos.</p>
+              <div class="pros-cons">
+                <div class="small-card"><span>Ventaja</span><strong>Detecta anomalías sin etiquetas y escala bien</strong></div>
+                <div class="small-card"><span>Limitación</span><strong>Puede producir falsos positivos y requiere ajuste de parámetros</strong></div>
               </div>
-            </details>
+              <div class="small-card" style="margin-top:16px"><span>Ejemplo</span><strong>Identificar transacciones inusuales por patrón de origen/destino o por comportamiento horario fuera de lo habitual.</strong></div>
+            </div>
+            <button class="toggle-more">Ver más ▼</button>
+          </div>
         </details>
       </div>
     </section>
@@ -619,6 +638,57 @@
         modalOverlay.classList.add('open');
       }
     });
+
+    // Enhancements for algorithm cards: always show a short summary and provide a "Ver más/Ver menos" button with smooth animation
+    (function(){
+      const cards = document.querySelectorAll('.algorithm-card');
+      function updateButton(details){
+        const btn = details.querySelector('.toggle-more');
+        if(!btn) return;
+        btn.textContent = details.open ? 'Ver menos ▲' : 'Ver más ▼';
+      }
+      cards.forEach(details => {
+        const content = details.querySelector('.details-content');
+        const btn = details.querySelector('.toggle-more');
+        // initialize max-height according to open state
+        if(content){
+          if(details.open){
+            content.style.maxHeight = content.scrollHeight + 'px';
+          } else {
+            content.style.maxHeight = '0px';
+          }
+        }
+        updateButton(details);
+        // button toggles open state
+        if(btn){
+          btn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            details.open = !details.open;
+            // allow the toggle event to run and animate
+            setTimeout(()=>{
+              if(details.open){
+                content.style.maxHeight = content.scrollHeight + 'px';
+                details.scrollIntoView({behavior:'smooth', block:'center'});
+              } else {
+                content.style.maxHeight = '0px';
+              }
+            }, 20);
+            updateButton(details);
+          });
+        }
+        // when native <details> toggles (e.g. clicking summary), animate height and update button
+        details.addEventListener('toggle', ()=>{
+          if(content){
+            if(details.open){
+              content.style.maxHeight = content.scrollHeight + 'px';
+            } else {
+              content.style.maxHeight = '0px';
+            }
+          }
+          updateButton(details);
+        });
+      });
+    })();
   </script>
 </body>
 </html>
